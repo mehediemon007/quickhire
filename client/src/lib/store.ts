@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import authReducer from "./features/auth/authSlice";
 
 interface FilterState {
     search: string;
@@ -28,6 +29,7 @@ export const { setFilters, resetFilters } = filterSlice.actions;
 export const store = configureStore({
     reducer: {
         filters: filterSlice.reducer,
+        auth: authReducer,
     },
 });
 
