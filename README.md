@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QuickHire — Job Board Application
+
+A full-stack job board application built with Next.js and Express.js.
+
+## Tech Stack
+
+**Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS v4, Material UI, Redux Toolkit, React Query, React Hook Form, Zod, Framer Motion
+
+**Backend:** Express.js, MongoDB (Mongoose), Zod validation, TypeScript
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 20+
+- MongoDB running locally (or a MongoDB Atlas connection string)
+
+---
+
+### 1. Server Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd server
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file (already exists):
+```
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/job-board
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Seed the database:**
+```bash
+npx tsx seeder.ts
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Start the server:**
+```bash
+npm run dev
+```
 
-## Learn More
+API will be running at: `http://localhost:5000`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Client Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cd client
+npm install
+```
 
-## Deploy on Vercel
+The `.env.local` file (already created):
+```
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Start the client:**
+```bash
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Client will be running at: `http://localhost:3000`
+
+---
+
+## API Endpoints
+
+### Jobs
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/jobs` | List all jobs (supports `?search=`, `?category=`, `?location=` filters) |
+| GET | `/api/jobs/:id` | Get single job by ID |
+| POST | `/api/jobs` | Create a new job |
+| DELETE | `/api/jobs/:id` | Delete a job |
+
+### Applications
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/applications` | Submit a job application |
+
+---
+
+## Project Structure
+
+```
+QuickHire/
+├── server/
+│   ├── models/          # Mongoose models (Job, Application)
+│   ├── controllers/     # Route handlers
+│   ├── routes/          # Express routes
+│   ├── validators/      # Zod schemas
+│   ├── seeder.ts        # Database seeder
+│   └── server.ts        # Express app entry point
+│
+└── client/
+    └── src/
+        ├── app/         # Next.js App Router pages
+        │   ├── page.tsx         # Home / Job Listings
+        │   ├── jobs/[id]/       # Job Detail & Apply Form
+        │   └── admin/           # Admin Dashboard
+        ├── components/  # Reusable UI components
+        ├── hooks/        # React Query hooks
+        ├── lib/          # Redux store & Axios client
+        └── types/        # TypeScript interfaces
+```
