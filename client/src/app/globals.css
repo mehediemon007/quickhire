@@ -16,6 +16,19 @@
   --color-accent: #26A4FF;
   --color-black: #202430;
   --color-black-500: #20243080;
+
+  --animate-fadeInDown: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer base {

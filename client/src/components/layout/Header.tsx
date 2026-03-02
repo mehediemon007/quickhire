@@ -1,12 +1,32 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Header() {
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(()=>{
+
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 100)
+        }
+
+        window.addEventListener('scroll', handleScroll, {passive: true})
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+
+    },[])
+
     return (
-        <header className="fixed w-full top-0 py-3.5 z-50">
+        <header className={`fixed w-full top-0 py-3.5 z-50 transition-all duration-300  
+            ${isScrolled 
+                ? "bg-white animate-fadeInDown shadow-[0_10px_15px_rgba(25,25,25,0.1)]" 
+                : "bg-transparent"
+            }`}
+        >
             <div className="container">
                 <div className="flex justify-between items-center">
                     <div className="flex justify-start items-end gap-12">
