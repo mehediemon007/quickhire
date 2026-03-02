@@ -1,46 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  --color-neutral-100: #25324B;
+  --color-neutral-200: #D6DDEB;
+  --color-neutral-600: #7C8493;
+  --color-neutral-800: #515B6F;
+  --color-primary: #4640DE;
+  --color-black: #202430;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: var(--color-slate-50);
-  color: var(--color-slate-900);
+@theme inline {
+  --font-title: var(--font-clash);
+  --font-body: var(--font-epilogue);
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+@layer base {
+  body {
+    @apply font-body
+  }
+
+  input,
+  select {
+    @apply w-full outline-none
+  }
 }
 
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+@layer components {
+  .btn {
+    @apply inline-flex justify-center items-center w-max h-12.5 font-bold text-primary px-4 sm:px-6 transition-colors duration-300 ease-in
+  }
+
+  .btn-primary {
+    @apply text-white bg-primary
+  }
 }
 
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
+@utility container {
+  width: 100%;
+  max-width: 1194px;
+  margin-inline: auto;
+  padding-inline: 1rem;
 }

@@ -6,7 +6,6 @@ export interface IJob extends Document {
     location: string;
     category: string;
     description: string;
-    featured: boolean;
     createdAt: Date;
 }
 
