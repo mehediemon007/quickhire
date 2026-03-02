@@ -1,11 +1,13 @@
 export interface Job {
-    _id: string;
+    id: number | string;
     title: string;
-    company: string;
+    jobType: string; 
+    companyName: string;
+    logo: string;
     location: string;
-    category: string;
-    description: string;
-    createdAt: string;
+    jobDesc: string;
+    salary: number | string;
+    tags: string[];
 }
 
 export interface Application {

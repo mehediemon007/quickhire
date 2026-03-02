@@ -26,6 +26,10 @@
     @apply text-[48px]/[1.10] font-semibold font-title text-neutral-100
   }
 
+  h5 {
+    @apply text-lg/[1.6] font-semibold text-neutral-100
+  }
+
   input,
   select {
     @apply w-full outline-none
