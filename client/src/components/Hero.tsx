@@ -17,7 +17,7 @@ export default function Hero() {
                     </div>
                     <div>
                         <div className="relative w-125.25 h-176.75 aspect-501/7071">
-                            <Image src={'/assets/images/hero.png'} alt='Hero Image' fill className="object-cover"/>
+                            <Image src={'/assets/images/hero.png'} alt='Hero Image' fill sizes="100vw" priority={true} className="object-cover"/>
                         </div>
                     </div>
                 </div>
