@@ -5,15 +5,17 @@ import { z } from "zod";
 
 export const getJobs = async (req: Request, res: Response) => {
     try {
-        const { category, location, search } = req.query;
+        const { category, location, search, featured } = req.query;
         const filter: any = {};
 
         if (category) filter.category = category;
-        if (location) filter.location = { $regex: location, $options: "i" };
+        if (location) filter.location = { $regex: location as string, $options: "i" };
+        if (featured === "true") filter.featured = true;
+
         if (search) {
             filter.$or = [
-                { title: { $regex: search, $options: "i" } },
-                { company: { $regex: search, $options: "i" } },
+                { title: { $regex: search as string, $options: "i" } },
+                { company: { $regex: search as string, $options: "i" } },
             ];
         }
 

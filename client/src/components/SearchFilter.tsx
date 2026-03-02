@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilters, RootState } from "@/lib/store";
 import { Search, MapPin, Briefcase } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function SearchFilter() {
     const dispatch = useDispatch();
+    const router = useRouter();
     const filters = useSelector((state: RootState) => state.filters);
 
     const [localSearch, setLocalSearch] = useState(filters.search);
@@ -16,6 +18,7 @@ export default function SearchFilter() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(setFilters({ search: localSearch, location: localLocation, category: localCategory }));
+        router.push(`/jobs?search=${localSearch}&location=${localLocation}&category=${localCategory}`);
     };
 
     return (
@@ -41,13 +44,18 @@ export default function SearchFilter() {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <MapPin className="h-5 w-5 text-slate-400" />
                     </div>
-                    <input
-                        type="text"
-                        className="block w-full pl-10 pr-3 py-3 border-0 bg-slate-50 text-slate-900 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all outline-none"
-                        placeholder="Location..."
+                    <select
+                        className="block w-full pl-10 pr-3 py-3 border-0 bg-slate-50 text-slate-900 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all outline-none appearance-none"
                         value={localLocation}
                         onChange={(e) => setLocalLocation(e.target.value)}
-                    />
+                    >
+                        <option value="">Select Location</option>
+                        <option value="Remote">Remote</option>
+                        <option value="New York">New York</option>
+                        <option value="San Francisco">San Francisco</option>
+                        <option value="London">London</option>
+                        <option value="Berlin">Berlin</option>
+                    </select>
                 </div>
 
                 <div className="flex-1 relative">

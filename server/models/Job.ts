@@ -6,6 +6,7 @@ export interface IJob extends Document {
     location: string;
     category: string;
     description: string;
+    featured: boolean;
     createdAt: Date;
 }
 
@@ -16,6 +17,7 @@ const jobSchema: Schema = new Schema(
         location: { type: String, required: true },
         category: { type: String, required: true },
         description: { type: String, required: true },
+        featured: { type: Boolean, default: false },
     },
     { timestamps: true }
 );
