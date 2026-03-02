@@ -1,12 +1,12 @@
 import Hero from "@/components/Hero";
-import LogoTicker from "@/components/LogoTicker";
+import Clients from "../../public/assets/images/Clients";
 import JobListings from "@/components/JobListings";
 
 export default function Home() {
     return (
         <>
             <Hero />
-            <LogoTicker />
+            <Clients />
             <section className="py-20 bg-slate-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="mb-10">
