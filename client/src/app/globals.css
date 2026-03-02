@@ -10,6 +10,7 @@
 @theme inline {
   --font-title: var(--font-clash);
   --font-body: var(--font-epilogue);
+  --font-inter: var(--font-inter);
 
   --color-primary: #4640DE;
   --color-accent: #26A4FF;
@@ -19,7 +20,7 @@
 
 @layer base {
   body {
-    @apply text-base/[1.6] font-body
+    @apply text-base/[1.6] font-body font-normal
   }
 
   h2 {
@@ -34,6 +35,11 @@
   select {
     @apply w-full outline-none
   }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    @apply cursor-pointer
+  }
 }
 
 @layer components {
@@ -43,6 +49,10 @@
 
   .btn-primary {
     @apply text-white bg-primary
+  }
+
+  .footer-widget li a{
+    @apply text-neutral-200 transition-all duration-300 ease-in-out hover:text-white
   }
 }
 

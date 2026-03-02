@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Header from "@/components/layout/Header";
 import Providers from "@/components/Providers";
+import Footer from "@/components/layout/Footer";
 
 
 const clashDisplay = localFont({
@@ -40,10 +41,11 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
     return (
         <html lang="en">
-            <body className={`${clashDisplay.variable} ${epilogue.variable} ${inter.className} antialiased`}>
+            <body className={`${clashDisplay.variable} ${epilogue.variable} ${inter.variable} antialiased`}>
                 <Providers>
                     <Header />
                     <main>{children}</main>
+                    <Footer/>
                 </Providers>
             </body>
         </html>

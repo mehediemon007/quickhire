@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
-import Clients from "../../public/assets/images/Clients";
+import Clients from "@/components/home/Clients";
 import JobListings from "@/components/JobListings";
 import Categories from "@/components/Categories";
 import FeaturedJobs from "@/components/home/FeaturedJobs";
 import Image from "next/image";
+import LatestJobs from "@/components/home/LatestJobs";
 
 export default function Home() {
     return (
@@ -34,8 +35,8 @@ export default function Home() {
                 </div>
             </section>
             <FeaturedJobs/>
-            
-            <section className="py-20 bg-slate-50">
+            <LatestJobs/>
+            {/* <section className="py-20 bg-slate-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="mb-10">
                     <h2 className="text-3xl font-bold text-slate-900">Latest Opportunities</h2>
@@ -43,7 +44,7 @@ export default function Home() {
                     </div>
                     <JobListings />
                 </div>
-            </section>
+            </section> */}
         </>
     );
 }
