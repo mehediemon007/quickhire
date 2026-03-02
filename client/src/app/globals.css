@@ -5,19 +5,25 @@
   --color-neutral-200: #D6DDEB;
   --color-neutral-600: #7C8493;
   --color-neutral-800: #515B6F;
-  --color-primary: #4640DE;
-  --color-black: #202430;
-  --color-black-500: #20243080;
 }
 
 @theme inline {
   --font-title: var(--font-clash);
   --font-body: var(--font-epilogue);
+
+  --color-primary: #4640DE;
+  --color-accent: #26A4FF;
+  --color-black: #202430;
+  --color-black-500: #20243080;
 }
 
 @layer base {
   body {
     @apply text-base/[1.6] font-body
+  }
+
+  h2 {
+    @apply text-[48px]/[1.10] font-semibold font-title text-neutral-100
   }
 
   input,
