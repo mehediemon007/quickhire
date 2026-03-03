@@ -6,7 +6,7 @@ export const useJobs = (filters: { search?: string; location?: string; category?
     return useQuery({
         queryKey: ["jobs", filters],
         queryFn: async () => {
-            const { data } = await api.get<Job[]>("/jobs", { params: filters });
+            const { data } = await api.get<Job[]>("/api/jobs", { params: filters });
             return data;
         },
     });
