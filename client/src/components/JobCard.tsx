@@ -25,7 +25,7 @@ export default function JobCard({ job }: { job: Job }) {
                     </div>
                 </div>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-100 whitespace-nowrap">
-                    {job.category}
+                    {/* {job.category} */}
                 </span>
             </div>
 
@@ -36,7 +36,7 @@ export default function JobCard({ job }: { job: Job }) {
                 </div>
                 <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
-                    {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}
+                    {/* {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })} */}
                 </div>
             </div>
 

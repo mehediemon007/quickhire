@@ -7,14 +7,14 @@ import { tagStyles } from '@/constants/tag-colors';
 
 function JobListCard({ job }: { job: Job }) {
     return (
-        <Link href={`/jobs/${job.id}`} className="relative flex gap-6 bg-white px-10 py-6">
+        <Link href={`/jobs/${job._id}`} className="relative flex gap-6 bg-white px-10 py-6">
             <div className='relative w-14 h-14 aspect-square'>
-                <Image src={job.logo} alt={job.companyName} fill sizes='100vw' className='object-contain'/>
+                <Image src={job.logo} alt={job.company} fill sizes='100vw' className='object-contain'/>
             </div>
             <div>
                 <h5 className='text-xl/[1.2]'>{job.title}</h5>
                 <div className='flex items-center gap-2 my-2'>
-                    <p className='text-neutral-800'>{job.companyName}</p>
+                    <p className='text-neutral-800'>{job.company}</p>
                     <span className='inline-block w-1 h-1 rounded-full bg-neutral-800'></span>
                     <p className='text-neutral-800'>{job.location}</p>
                 </div>

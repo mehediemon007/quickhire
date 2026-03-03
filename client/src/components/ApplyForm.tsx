@@ -16,7 +16,7 @@ const applicationSchema = z.object({
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
 
-export default function ApplyForm({ jobId }: { jobId: string }) {
+export default function ApplyForm({ jobId }: { jobId: string | number }) {
   const {
     register,
     handleSubmit,

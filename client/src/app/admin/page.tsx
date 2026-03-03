@@ -184,7 +184,7 @@ export default function AdminPage() {
                 )}
 
                 {/* Job List */}
-        {isLoading ? (
+        {/* {isLoading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
           </div>
@@ -239,7 +239,7 @@ export default function AdminPage() {
                             </div>
                         ))}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

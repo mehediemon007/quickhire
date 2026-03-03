@@ -1,8 +1,8 @@
 export interface Job {
-    id: number | string;
+    _id: number | string;
     title: string;
     jobType: string; 
-    companyName: string;
+    company: string;
     logo: string;
     location: string;
     jobDesc: string;

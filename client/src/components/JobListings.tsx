@@ -64,14 +64,14 @@ export default function JobListings() {
                 </div>
                 <h3 className="text-3xl font-bold text-slate-900 mb-4">No matching jobs found</h3>
                 <p className="text-slate-500 text-lg mb-10 leading-relaxed">
-                    We couldn't find any positions matching your current search. Try adjusting your filters or search terms for better results.
+                    We couldn&apos;t find any positions matching your current search. Try adjusting your filters or search terms for better results.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-4">
                     <span className="bg-slate-50 text-slate-600 px-4 py-2 rounded-full text-sm font-medium border border-slate-100 italic">
-                        Try "Developer"
+                        Try &quot;Developer&quot;
                     </span>
                     <span className="bg-slate-50 text-slate-600 px-4 py-2 rounded-full text-sm font-medium border border-slate-100 italic">
-                        Try "Remote"
+                        Try &quot;Remote&quot;
                     </span>
                 </div>
             </div>

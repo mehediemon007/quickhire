@@ -7,14 +7,14 @@ import { tagStyles } from '@/constants/tag-colors';
 
 function JobGridCard({ job }: { job: Job }) {
     return (
-        <Link href={`/jobs/${job.id}`} className="relative block h-full border border-neutral-200 p-6">
+        <Link href={`/jobs/${job._id}`} className="relative block h-full border border-neutral-200 p-6">
             <div className='relative w-12 h-12 aspect-square mb-4'>
-                <Image src={job.logo} alt={job.companyName} fill sizes='100vw' className='object-contain'/>
+                <Image src={job.logo} alt={job.company} fill sizes='100vw' className='object-contain'/>
             </div>
             <div>
                 <h5>{job.title}</h5>
                 <div className='flex items-center gap-2'>
-                    <p className='text-neutral-800'>{job.companyName}</p>
+                    <p className='text-neutral-800'>{job.company}</p>
                     <span className='inline-block w-1 h-1 rounded-full bg-neutral-800 opacity-30'></span>
                     <p className='text-neutral-800'>{job.location}</p>
                 </div>

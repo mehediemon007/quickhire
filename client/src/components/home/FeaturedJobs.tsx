@@ -8,10 +8,10 @@ import { ArrowRight } from 'lucide-react';
 
 const jobs = [
     {
-        id: 1,
+        _id: 1,
         title: "Email Marketing",
         jobType: "Full Time",
-        companyName: "Revolut",
+        company: "Revolut",
         logo: "/assets/images/revoult.svg",
         location: "Madrid, Spain",
         jobDesc: "Revolut is looking for Email Marketing to help team ma ...",
@@ -19,10 +19,10 @@ const jobs = [
         tags: ["Marketing", "Design"]
     },
     {
-        id: 2,
+        _id: 2,
         title: "Brand Designer",
         jobType: "Full Time",
-        companyName: "Dropbox",
+        company: "Dropbox",
         logo: "/assets/images/dropbox.svg",
         location: "San Fransisco, US",
         jobDesc: "Dropbox is looking for Brand Designer to help the team t ...",
@@ -30,10 +30,10 @@ const jobs = [
         tags: ["Design", "Business"]
     },
     {
-        id: 3,
+        _id: 3,
         title: "Email Marketing",
         jobType: "Full Time",
-        companyName: "Pitch",
+        company: "Pitch",
         logo: "/assets/images/pitch.svg",
         location: "Berlin, Germany",
         jobDesc: "Pitch is looking for Customer Manager to join marketing t ...",
@@ -41,10 +41,10 @@ const jobs = [
         tags: ["Marketing"]
     },
     {
-        id: 4,
+        _id: 4,
         title: "Visual Designer",
         jobType: "Full Time",
-        companyName: "Blinklist",
+        company: "Blinklist",
         logo: "/assets/images/binklist.svg",
         location: "Granada, Spain",
         jobDesc: "Blinkist is looking for Visual Designer to help team desi ...",
@@ -52,10 +52,10 @@ const jobs = [
         tags: ["Design",]
     },
     {
-        id: 5,
+        _id: 5,
         title: "Product Designer",
         jobType: "Full Time",
-        companyName: "ClassPass",
+        company: "ClassPass",
         logo: "/assets/images/classpass.svg",
         location: "Manchester, UK",
         jobDesc: "ClassPass is looking for Product Designer to help us...",
@@ -63,10 +63,10 @@ const jobs = [
         tags: ["Marketing", "Design",]
     },
     {
-        id: 6,
+        _id: 6,
         title: "Lead Designer",
         jobType: "Full Time",
-        companyName: "Canva",
+        company: "Canva",
         logo: "/assets/images/canva.svg",
         location: "Ontario, Canada",
         jobDesc: "Canva is looking for Lead Engineer to help develop n ...",
@@ -74,10 +74,10 @@ const jobs = [
         tags: ["Design", "Business"]
     },
     {
-        id: 7,
+        _id: 7,
         title: "Brand Strategist",
         jobType: "Full Time",
-        companyName: "GoDaddy",
+        company: "GoDaddy",
         logo: "/assets/images/godaddy.svg",
         location: "Marseille, France",
         jobDesc: "GoDaddy is looking for Brand Strategist to join the team...",
@@ -85,10 +85,10 @@ const jobs = [
         tags: ["Marketing",]
     },
     {
-        id: 8,
+        _id: 8,
         title: "Data Analyst",
         jobType: "Full Time",
-        companyName: "Twitter",
+        company: "Twitter",
         logo: "/assets/images/twitter.svg",
         location: "San Diego, US",
         jobDesc: "Twitter is looking for Data Analyst to help team desi ...",
@@ -112,7 +112,7 @@ const FeaturedJobs = () => {
                     <div className="grid grid-cols-4 gap-8">
                         {
                             jobs.map((job: Job) => (
-                                <div key={job.id} className='grid-cols-1'>
+                                <div key={job._id} className='grid-cols-1'>
                                     <JobGridCard job={job}/>
                                 </div>
                             ))

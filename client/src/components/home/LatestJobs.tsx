@@ -8,10 +8,10 @@ import { ArrowRight } from 'lucide-react';
 
 const jobs = [
     {
-        id: 1,
+        _id: 1,
         title: "Social Media Assistant",
         jobType: "Full Time",
-        companyName: "Nomad",
+        company: "Nomad",
         logo: "/assets/images/nomad.svg",
         location: "Paris, France",
         jobDesc: "Revolut is looking for Email Marketing to help team ma ...",
@@ -19,10 +19,10 @@ const jobs = [
         tags: ["Marketing", "Design"]
     },
     {
-        id: 2,
+        _id: 2,
         title: "Social Media Assistant",
         jobType: "Full Time",
-        companyName: "Netlify",
+        company: "Netlify",
         logo: "/assets/images/netlify.svg",
         location: "Paris, France",
         jobDesc: "Dropbox is looking for Brand Designer to help the team t ...",
@@ -30,10 +30,10 @@ const jobs = [
         tags: ["Design", "Business"]
     },
     {
-        id: 3,
+        _id: 3,
         title: "Brand Designer",
         jobType: "Full Time",
-        companyName: "Dropbox",
+        company: "Dropbox",
         logo: "/assets/images/dropbox.svg",
         location: "San Fransisco, USA",
         jobDesc: "Pitch is looking for Customer Manager to join marketing t ...",
@@ -41,10 +41,10 @@ const jobs = [
         tags: ["Marketing", "Design"]
     },
     {
-        id: 4,
+        _id: 4,
         title: "Brand Designer",
         jobType: "Full Time",
-        companyName: "Maze",
+        company: "Maze",
         logo: "/assets/images/binklist.svg",
         location: "San Fransisco, USA",
         jobDesc: "Blinkist is looking for Visual Designer to help team desi ...",
@@ -52,10 +52,10 @@ const jobs = [
         tags: ["Design",]
     },
     {
-        id: 5,
+        _id: 5,
         title: "Interactive Developer",
         jobType: "Full Time",
-        companyName: "Terraform",
+        company: "Terraform",
         logo: "/assets/images/terraform.svg",
         location: "Hamburg, Germany",
         jobDesc: "ClassPass is looking for Product Designer to help us...",
@@ -63,10 +63,10 @@ const jobs = [
         tags: ["Marketing", "Design",]
     },
     {
-        id: 6,
+        _id: 6,
         title: "Interactive Developer",
         jobType: "Full Time",
-        companyName: "Udacity",
+        company: "Udacity",
         logo: "/assets/images/udacity.svg",
         location: "Hamburg, Germany",
         jobDesc: "Canva is looking for Lead Engineer to help develop n ...",
@@ -74,10 +74,10 @@ const jobs = [
         tags: ["Design", "Business"]
     },
     {
-        id: 7,
+        _id: 7,
         title: "HR Manager",
         jobType: "Full Time",
-        companyName: "Packer",
+        company: "Packer",
         logo: "/assets/images/packer.svg",
         location: "Lucern, Switzerland",
         jobDesc: "GoDaddy is looking for Brand Strategist to join the team...",
@@ -85,10 +85,10 @@ const jobs = [
         tags: ["Marketing", "Design"]
     },
     {
-        id: 8,
+        _id: 8,
         title: "HR Manager",
         jobType: "Full Time",
-        companyName: "Webflow",
+        company: "Webflow",
         logo: "/assets/images/webflow.svg",
         location: "Lucern, Switzerland",
         jobDesc: "Twitter is looking for Data Analyst to help team desi ...",
@@ -113,7 +113,7 @@ const LatestJobs = () => {
                     <div className="grid grid-cols-2 gap-8">
                         {
                             jobs.map((job: Job) => (
-                                <div key={job.id} className='grid-cols-1'>
+                                <div key={job._id} className='grid-cols-1'>
                                     <JobListCard job={job}/>
                                 </div>
                             ))
