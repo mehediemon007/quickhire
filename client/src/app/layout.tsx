@@ -6,6 +6,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Providers from "@/components/Providers";
 import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 
 const clashDisplay = localFont({
@@ -47,6 +48,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
                     <main>{children}</main>
                     <Footer/>
                 </Providers>
+                <ScrollToTop/>
             </body>
         </html>
     );
