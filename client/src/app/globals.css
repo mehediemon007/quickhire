@@ -5,23 +5,53 @@
   --color-neutral-200: #D6DDEB;
   --color-neutral-600: #7C8493;
   --color-neutral-800: #515B6F;
-  --color-primary: #4640DE;
-  --color-black: #202430;
 }
 
 @theme inline {
   --font-title: var(--font-clash);
   --font-body: var(--font-epilogue);
+  --font-inter: var(--font-inter);
+
+  --color-primary: #4640DE;
+  --color-accent: #26A4FF;
+  --color-black: #202430;
+  --color-black-500: #20243080;
+
+  --animate-fadeInDown: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer base {
   body {
-    @apply font-body
+    @apply text-base/[1.6] font-body font-normal
+  }
+
+  h2 {
+    @apply text-[48px]/[1.10] font-semibold font-title text-neutral-100
+  }
+
+  h5 {
+    @apply text-lg/[1.6] font-semibold text-neutral-100
   }
 
   input,
   select {
     @apply w-full outline-none
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    @apply cursor-pointer
   }
 }
 
@@ -33,11 +63,14 @@
   .btn-primary {
     @apply text-white bg-primary
   }
+
+  .footer-widget li a{
+    @apply text-neutral-200 transition-all duration-300 ease-in-out hover:text-white
+  }
 }
 
 @utility container {
   width: 100%;
   max-width: 1194px;
   margin-inline: auto;
-  padding-inline: 1rem;
 }
