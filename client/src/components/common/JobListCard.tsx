@@ -7,7 +7,7 @@ import { tagStyles } from '@/constants/tag-colors';
 
 function JobListCard({ job }: { job: Job }) {
     return (
-        <Link href={`/jobs/${job._id}`} className="relative flex gap-6 bg-white px-10 py-6">
+        <Link href={`/jobs/${job._id}`} className="relative flex flex-col sm:flex-row md:flex-col lg:flex-row gap-6 bg-white p-4 lg:px-10 lg:py-6">
             <div className='relative w-14 h-14 aspect-square'>
                 <Image src={job.logo} alt={job.company} fill sizes='100vw' className='object-contain'/>
             </div>

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  
   --color-neutral-100: #25324B;
   --color-neutral-200: #D6DDEB;
   --color-neutral-600: #7C8493;
@@ -37,7 +38,7 @@
   }
 
   h2 {
-    @apply text-[48px]/[1.10] font-semibold font-title text-neutral-100
+    @apply text-[2rem]/[1.2] sm:text-[3rem]/[1.10] font-semibold font-title text-neutral-100
   }
 
   h5 {
@@ -73,4 +74,5 @@
   width: 100%;
   max-width: 1194px;
   margin-inline: auto;
+  padding-inline: 1rem;
 }

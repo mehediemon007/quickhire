@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SearchFilter from "./SearchFilter";
+import SearchFilter from "../SearchFilter";
 
 export default function Hero() {
     return (

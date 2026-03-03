@@ -67,7 +67,7 @@ function Categories() {
                     </Link>
                 </div>
                 <div>
-                    <div className="grid grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
                         {
                             categories.map((category) => (
                                 <div key={category.id} className="col-span-1 border border-neutral-200 p-8 space-y-7 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">

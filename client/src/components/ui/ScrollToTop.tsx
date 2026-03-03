@@ -43,7 +43,7 @@ function ScrollToTop({ className } : Props) {
     },[])
 
     return (
-        <div className={cn("fixed bottom-8 right-8 z-50", className)}>
+        <div className={cn("fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50", className)}>
             <button 
                 type='button'
                 onClick={scrollToTop}

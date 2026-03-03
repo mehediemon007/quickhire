@@ -110,7 +110,7 @@ const LatestJobs = () => {
                     </Link>
                 </div>
                 <div>
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                         {
                             jobs.map((job: Job) => (
                                 <div key={job._id} className='grid-cols-1'>
