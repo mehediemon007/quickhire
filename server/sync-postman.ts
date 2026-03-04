@@ -6,7 +6,7 @@ async function sync() {
 
   try {
     await axios.put(
-      `https://api.getpostman.com/apis/${process.env.POSTMAN_API_KEY}/specifications/${process.env.POSTMAN_SPEC_ID}`,
+      `https://api.getpostman.com/apis/${process.env.POSTMAN_API_ID}/specifications/${process.env.POSTMAN_SPEC_ID}`,
       { content: schema },
       { headers: { 'X-Api-Key': process.env.POSTMAN_API_KEY } }
     );
