@@ -6,9 +6,9 @@ export default function Hero() {
         <section className="relative bg-[#F8F8FD] pt-18 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-2/3 h-full bg-[url('/assets/images/hero-bg-pattern.svg')] bg-right bg-contain bg-no-repeat -z-1"></div>
             <div className="container">
-                <div className="flex items-center gap-14.5">
+                <div className="flex-col items-center gap-14.5">
                     <div className="max-w-157.5 h-max">
-                        <h1 className="max-w-133.25 text-[72px]/[1.10] font-semibold font-title text-neutral-100">
+                        <h1 className="max-w-133.25 text-5xl/[1.10] sm:text-[72px]/[1.10] font-semibold font-title text-neutral-100">
                             Discover more than <span className="text-primary">5000+ Jobs</span>
                         </h1>
                         <Image src={'/assets/images/line.svg'} alt="line" width={455} height={40}/>

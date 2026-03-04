@@ -14,8 +14,8 @@ export default function Home() {
             <Clients />
             <Categories/>
             <section>
-                <div className="container">
-                    <div className="flex justify-between gap-32 px-19.75 pt-17 bg-[url('/assets/images/dashboard-bg.svg')] bg-cover bg-left bg-no-repeat">
+                <div className="container px-0">
+                    <div className="flex-col justify-between gap-32 pl-4 sm:px-19.75 pt-17 bg-[url('/assets/images/dashboard-bg.svg')] bg-cover bg-left bg-no-repeat">
                         <div className="max-w-91 space-y-6">
                             <h2 className="text-white">Start posting jobs today</h2>
                             <p className="text-white">Start posting jobs for only $10.</p>

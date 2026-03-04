@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
 import Job from "../models/Job.js";
+import Company from "../models/Company.js";
 import { jobSchema } from "../validators/index.js";
 import { z } from "zod";
+
+interface AuthRequest extends Request {
+    user?: {
+        userId: string;
+        role: string;
+    };
+}
 
 export const getJobs = async (req: Request, res: Response) => {
     try {
@@ -15,11 +23,13 @@ export const getJobs = async (req: Request, res: Response) => {
         if (search) {
             filter.$or = [
                 { title: { $regex: search as string, $options: "i" } },
-                { company: { $regex: search as string, $options: "i" } },
             ];
         }
 
-        const jobs = await Job.find(filter).sort({ createdAt: -1 });
+        const jobs = await Job.find(filter)
+            .populate("company", "companyName logo companyIndustry")
+            .populate("postedBy", "fullname email")
+            .sort({ createdAt: -1 });
         res.json(jobs);
     } catch (error) {
         console.error("GET Jobs Error:", error);
@@ -29,7 +39,9 @@ export const getJobs = async (req: Request, res: Response) => {
 
 export const getJobById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const job = await Job.findById(req.params.id);
+        const job = await Job.findById(req.params.id)
+            .populate("company", "companyName logo location companyIndustry companyLink companyDescription")
+            .populate("postedBy", "fullname email");
         if (!job) {
             res.status(404).json({ error: "Job not found" });
             return;
@@ -41,12 +53,27 @@ export const getJobById = async (req: Request, res: Response): Promise<void> => 
     }
 };
 
-export const createJob = async (req: Request, res: Response): Promise<void> => {
+export const createJob = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
+        const userId = req.user?.userId;
+
+        // Find the employer's company
+        const company = await Company.findOne({ user: userId });
+        if (!company) {
+            res.status(400).json({ error: "Please complete your company setup first." });
+            return;
+        }
+
         const validatedData = jobSchema.parse(req.body);
-        const newJob = new Job(validatedData);
+        const newJob = new Job({
+            ...validatedData,
+            company: company._id,
+            postedBy: userId,
+        });
         await newJob.save();
-        res.status(201).json(newJob);
+
+        const populated = await newJob.populate("company", "companyName logo companyIndustry");
+        res.status(201).json(populated);
     } catch (error) {
         console.error("CREATE Job Error:", error);
         if (error instanceof z.ZodError) {
@@ -57,13 +84,37 @@ export const createJob = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-export const deleteJob = async (req: Request, res: Response): Promise<void> => {
+// Get jobs posted by the authenticated employer
+export const getMyJobs = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const job = await Job.findByIdAndDelete(req.params.id);
+        const userId = req.user?.userId;
+        const jobs = await Job.find({ postedBy: userId })
+            .populate("company", "companyName logo companyIndustry")
+            .sort({ createdAt: -1 });
+        res.json(jobs);
+    } catch (error) {
+        console.error("GET My Jobs Error:", error);
+        res.status(500).json({ error: "Server Error" });
+    }
+};
+
+export const deleteJob = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+        const job = await Job.findById(req.params.id);
+
         if (!job) {
             res.status(404).json({ error: "Job not found" });
             return;
         }
+
+        // Only the employer who posted the job can delete it
+        if (job.postedBy.toString() !== userId) {
+            res.status(403).json({ error: "You can only delete your own job postings." });
+            return;
+        }
+
+        await Job.findByIdAndDelete(req.params.id);
         res.json({ message: "Job deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: "Server Error" });

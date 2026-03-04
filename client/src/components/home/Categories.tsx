@@ -59,9 +59,9 @@ function Categories() {
     return (
         <section className='py-18'>
             <div className="container">
-                <div className='flex justify-between items-end gap-4 mb-12'>
+                <div className='flex justify-between items-end gap-4 mb-6 sm:mb-12'>
                     <h2>Explore by <span className='text-accent'>category</span></h2>
-                    <Link href={'#'} className='inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
+                    <Link href={'#'} className='hidden sm:inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
                         <span>Show all jobs</span>
                         <ArrowRight />
                     </Link>
@@ -70,16 +70,16 @@ function Categories() {
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
                         {
                             categories.map((category) => (
-                                <div key={category.id} className="col-span-1 border border-neutral-200 p-8 space-y-7 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">
-                                    <div className='relative w-12 h-12 aspect-square'>
+                                <div key={category.id} className="col-span-1 flex items-center gap-8 border border-neutral-200 p-4 sm:p-8 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">
+                                    <div className='relative w-10 sm:w-12 h-10 sm:h-12 aspect-square'>
                                         <Image src={category.icon} alt={category.name} fill sizes='100vw' className='transition-colors duration-200 ease-in group-hover:brightness-0 group-hover:invert'/>
                                     </div>
                                     <div>
-                                        <h5 className='text-2xl/[1.2] font-semibold font-title text-neutral-100 transition-colors duration-200 ease-in group-hover:text-white'>
+                                        <h5 className='text-xl/[1.2] sm:text-2xl/[1.2] font-semibold font-title text-neutral-100 transition-colors duration-200 ease-in group-hover:text-white'>
                                             <Link href={'#'}>{category.name}</Link>
                                         </h5>
-                                        <div className='flex items-center gap-4 mt-3'>
-                                            <p className='text-lg/[1.6] text-neutral-600 transition-colors duration-200 ease-in group-hover:text-white'>{category.totalJobs} jobs available</p>
+                                        <div className='flex items-center gap-4 mt-0.5 sm:mt-3'>
+                                            <p className='text-base sm:text-lg/[1.6] text-neutral-600 transition-colors duration-200 ease-in group-hover:text-white'>{category.totalJobs} jobs available</p>
                                             <Link href={'#'} className='transition-colors duration-200 ease-in group-hover:text-white'><ArrowRight /></Link>
                                         </div>
                                     </div>

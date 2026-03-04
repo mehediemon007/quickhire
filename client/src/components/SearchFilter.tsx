@@ -28,10 +28,10 @@ export default function SearchFilter({ className } : Props) {
 
     return (
         <>
-            <div className={cn("relative w-213 bg-white p-4 shadow-[0px_2.71px_4.4px_0px_#C0C0C007,0px_6.86px_11.12px_0px_#C0C0C00A,0px_14px_22.68px_0px_#C0C0C00C,0px_28.84px_46.72px_0px_#C0C0C00F,0px_79px_128px_0px_#C0C0C017]", className)}>
+            <div className={cn("relative w-full sm:w-213 bg-white p-4 shadow-[0px_2.71px_4.4px_0px_#C0C0C007,0px_6.86px_11.12px_0px_#C0C0C00A,0px_14px_22.68px_0px_#C0C0C00C,0px_28.84px_46.72px_0px_#C0C0C00F,0px_79px_128px_0px_#C0C0C017]", className)}>
                 <form
                     onSubmit={handleSearch}
-                    className="flex justify-between"
+                    className="flex flex-col sm:flex-row justify-between"
                 >
                     <div className="flex-1 flex items-center pr-4">
                         <span className="inline-flex items-center justify-center w-12">
