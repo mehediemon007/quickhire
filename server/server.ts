@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import employerSetupRoutes from "./routes/employerSetupRoutes.js";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/employer", employerSetupRoutes);
 
 // Database Connection
 mongoose

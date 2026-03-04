@@ -40,6 +40,7 @@ const signup = async (req: Request, res: Response) => {
                 email: newUser.email,
                 role: newUser.role,
                 fullname: newUser.fullname,
+                isProfileComplete: newUser.isProfileComplete,
             },
         });
     } catch (error: any) {
@@ -77,6 +78,7 @@ const login = async (req: Request, res: Response) => {
                 email: user.email,
                 role: user.role,
                 fullname: user.fullname,
+                isProfileComplete: user.isProfileComplete,
             },
         });
     } catch (error: any) {

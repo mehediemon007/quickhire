@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       enum: ["employer", "employee"],
       required: true,
     },
+    isProfileComplete: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
