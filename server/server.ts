@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+
 import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -33,6 +37,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 // Request logger
@@ -46,6 +51,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/employer", employerSetupRoutes);
+
+const swaggerPath = path.resolve(process.cwd(), 'swagger-output.json');
+const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf8'));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/api-docs-json', (req, res) => res.json(swaggerDocument));
 
 // Database Connection
 mongoose
