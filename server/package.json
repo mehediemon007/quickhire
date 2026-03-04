@@ -6,7 +6,7 @@
   "scripts": {
     "build-docs": "tsx swagger.ts",
     "sync-postman": "tsx sync-postman.ts",
-    "dev": "tsx watch --ignore swagger-output.json server.ts",
+    "dev": "tsx watch server.ts",
     "build": "npm run build-docs && tsc && npm run sync-postman",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
