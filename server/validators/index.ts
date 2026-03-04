@@ -8,7 +8,7 @@ export const jobSchema = z.object({
 });
 
 export const applicationSchema = z.object({
-    job: z.string().min(1, "Job ID is required"),
+    job_id: z.string().min(1, "Job ID is required"),
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email format"),
     resume_link: z.string().url("Resume link must be a valid URL"),
