@@ -18,14 +18,3 @@ export const applyForJob = async (req: Request, res: Response): Promise<void> =>
         }
     }
 };
-
-export const getApplicationsByJob = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const applications = await Application.find({ job_id: req.params.jobId })
-            .sort({ createdAt: -1 });
-        res.json(applications);
-    } catch (error) {
-        console.error("GET Applications Error:", error);
-        res.status(500).json({ error: "Server Error" });
-    }
-};
