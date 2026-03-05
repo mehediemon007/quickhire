@@ -95,48 +95,122 @@
     },
     "/api/jobs/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Get all jobs",
+        "description": "Returns all job postings. Supports filtering by category, location, search keyword, and featured flag. Results are sorted by newest first.",
         "parameters": [
           {
             "name": "category",
             "in": "query",
+            "description": "Filter by job category",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Engineering"
+                }
+              }
             }
           },
           {
             "name": "location",
             "in": "query",
+            "description": "Filter by location (case-insensitive partial match)",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "New York"
+                }
+              }
             }
           },
           {
             "name": "search",
             "in": "query",
+            "description": "Search jobs by title (case-insensitive)",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Backend Developer"
+                }
+              }
             }
           },
           {
             "name": "featured",
             "in": "query",
+            "description": "Filter to show only featured jobs",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "boolean"
+                },
+                "example": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List of jobs returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPopulated"
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Create a new job posting",
+        "description": "Creates a job under the authenticated employers company. The employer must have completed company setup first. Company and postedBy are auto-attached from the authenticated user — do not send them in the body.",
         "parameters": [
           {
             "name": "authorization",
@@ -148,58 +222,196 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Job created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPopulated"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Company not set up yet — or Zod validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Please complete your company setup first."
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "example": [
+                                  "title"
+                                ]
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "Title is required"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized — JWT token missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden — employer role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJobBody"
+              }
+            }
           }
         }
       }
     },
     "/api/jobs/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Get a job by ID",
+        "description": "Returns a single job with full company details and poster info.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
-            }
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "64abc123ef4567890abcdef1"
+                }
+              }
+            },
+            "description": "MongoDB ObjectId of the job"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Job found and returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPopulatedFull"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Delete a job posting",
+        "description": "Permanently deletes a job. Only the employer who originally posted the job can delete it.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
-            }
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "64abc123ef4567890abcdef1"
+                }
+              }
+            },
+            "description": "MongoDB ObjectId of the job to delete"
           },
           {
             "name": "authorization",
@@ -211,26 +423,76 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Job deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Job deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden — you can only delete your own job postings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/jobs/my/posted": {
       "get": {
-        "description": "",
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Get my posted jobs",
+        "description": "Returns all jobs posted by the currently authenticated employer, sorted by newest first.",
         "parameters": [
           {
             "name": "authorization",
@@ -242,18 +504,54 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Employers own job postings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPopulated"
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden — employer role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/applications/": {
@@ -340,6 +638,199 @@
     }
   },
   "components": {
+    "schemas": {
+      "CreateJobBody": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "string"
+          },
+          "location": {
+            "type": "string",
+            "example": "string"
+          },
+          "category": {
+            "type": "string",
+            "example": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "string"
+          },
+          "featured": {
+            "type": "string",
+            "example": "boolean"
+          }
+        }
+      },
+      "CompanyBasic": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyName": {
+            "type": "string",
+            "example": "string"
+          },
+          "logo": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyIndustry": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "CompanyFull": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyName": {
+            "type": "string",
+            "example": "string"
+          },
+          "logo": {
+            "type": "string",
+            "example": "string"
+          },
+          "location": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyIndustry": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyLink": {
+            "type": "string",
+            "example": "string"
+          },
+          "companyDescription": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "PosterBasic": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "string"
+          },
+          "fullname": {
+            "type": "string",
+            "example": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "JobPopulated": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "string"
+          },
+          "title": {
+            "type": "string",
+            "example": "string"
+          },
+          "location": {
+            "type": "string",
+            "example": "string"
+          },
+          "category": {
+            "type": "string",
+            "example": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "string"
+          },
+          "featured": {
+            "type": "string",
+            "example": "boolean"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyBasic"
+          },
+          "postedBy": {
+            "$ref": "#/components/schemas/PosterBasic"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "JobPopulatedFull": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "string"
+          },
+          "title": {
+            "type": "string",
+            "example": "string"
+          },
+          "location": {
+            "type": "string",
+            "example": "string"
+          },
+          "category": {
+            "type": "string",
+            "example": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "string"
+          },
+          "featured": {
+            "type": "string",
+            "example": "boolean"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyFull"
+          },
+          "postedBy": {
+            "$ref": "#/components/schemas/PosterBasic"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
@@ -347,10 +838,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ]
+  }
 }
