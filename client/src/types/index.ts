@@ -1,3 +1,10 @@
+export interface JobCategory {
+    _id: string | number;
+    icon: string;
+    name: string;
+    totalJobs: number;
+}
+
 export interface Job {
     _id: number | string;
     title: string;

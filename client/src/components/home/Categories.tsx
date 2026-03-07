@@ -1,54 +1,56 @@
 import React from 'react'
 import Link from 'next/link';
-import Image from 'next/image';
+import CatehoryCard from '../common/CatehoryCard';
 
 import { ArrowRight } from 'lucide-react';
 
-const categories = [
+import { JobCategory } from '@/types';
+
+const categories: JobCategory[] = [
     {
-        id: 1,
+        _id: 1,
         icon: "/assets/images/icons/icon-design.svg",
         name: "Design",
         totalJobs: 426
     },
     {
-        id: 2,
+        _id: 2,
         icon: "/assets/images/icons/icon-sales.svg",
         name: "Sales",
         totalJobs: 756
     },
     {
-        id: 3,
+        _id: 3,
         icon: "/assets/images/icons/icon-marketing.svg",
         name: "Marketing",
         totalJobs: 140
     },
     {
-        id: 4,
+        _id: 4,
         icon: "/assets/images/icons/icon-wallet.svg",
         name: "Finance",
         totalJobs: 325
     },
     {
-        id: 5,
+        _id: 5,
         icon: "/assets/images/icons/icon-monitor.svg",
         name: "Technology",
         totalJobs: 436
     },
     {
-        id: 6,
+        _id: 6,
         icon: "/assets/images/icons/icon-bracket.svg",
         name: "Engineering",
         totalJobs: 542
     },
     {
-        id: 7,
+        _id: 7,
         icon: "/assets/images/icons/icon-briefcase.svg",
         name: "Business",
         totalJobs: 211
     },
     {
-        id: 8,
+        _id: 8,
         icon: "/assets/images/icons/icon-humans.svg",
         name: "Human Resource",
         totalJobs: 346
@@ -66,27 +68,14 @@ function Categories() {
                         <ArrowRight />
                     </Link>
                 </div>
-                <div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                        {
-                            categories.map((category) => (
-                                <div key={category.id} className="col-span-1 flex xl:flex-col items-center xl:items-start gap-8 border border-neutral-200 p-4 sm:p-6 lg:gap-8 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">
-                                    <div className='relative w-10 sm:w-12 h-10 sm:h-12 aspect-square'>
-                                        <Image src={category.icon} alt={category.name} fill sizes='100vw' className='transition-colors duration-200 ease-in group-hover:brightness-0 group-hover:invert'/>
-                                    </div>
-                                    <div>
-                                        <h5 className='text-xl/[1.2] sm:text-2xl/[1.2] font-semibold font-title text-neutral-100 transition-colors duration-200 ease-in group-hover:text-white'>
-                                            <Link href={'#'}>{category.name}</Link>
-                                        </h5>
-                                        <div className='flex items-center gap-4 mt-0.5 sm:mt-3'>
-                                            <p className='text-base sm:text-lg/[1.6] text-neutral-600 transition-colors duration-200 ease-in group-hover:text-white'>{category.totalJobs} jobs available</p>
-                                            <Link href={'#'} className='transition-colors duration-200 ease-in group-hover:text-white'><ArrowRight /></Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+                    {
+                        categories.map((category: JobCategory) => (
+                            <div key={category._id} className="col-span-1">
+                                <CatehoryCard category={category}/>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </section>
