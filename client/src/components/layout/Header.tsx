@@ -21,9 +21,9 @@ export default function Header() {
     return (
         <header 
             className={cn(
-                "fixed w-full top-0 z-50 transition-transform duration-300 pt-2 pb-4 sm:py-3.5",
+                "fixed w-full top-0 z-50 transition-transform duration-300 py-3 sm:py-3.5",
                 isScrolled 
-                    ? "bg-white animate-fadeInDown shadow-md"
+                    ? "bg-white lg:animate-fadeInDown shadow-md"
                     : "bg-[#F8F8FD]"
             )}
         >

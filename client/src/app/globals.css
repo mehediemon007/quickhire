@@ -41,6 +41,10 @@
     @apply text-[2rem]/[1.2] sm:text-[3rem]/[1.10] font-semibold font-title text-neutral-100
   }
 
+  h3 {
+    @apply text-xl/[1.2] font-semibold text-neutral-100
+  }
+
   h5 {
     @apply text-lg/[1.6] font-semibold text-neutral-100
   }

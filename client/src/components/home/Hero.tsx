@@ -3,7 +3,7 @@ import SearchFilter from "../SearchFilter";
 
 export default function Hero() {
     return (
-        <section className="relative bg-[#F8F8FD] pt-7 pb-8 lg:pb-0 overflow-hidden z-10">
+        <section className="relative bg-[#F8F8FD] py-8 lg:pb-0 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-full sm:w-2/3 h-full bg-[url('/assets/images/hero-bg-pattern-sm.svg')] xl:bg-[url('/assets/images/hero-bg-pattern.svg')] bg-right bg-contain bg-no-repeat -z-1"></div>
             <div className="container">
                 <div className="flex items-center gap-14.5">
