@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link';
-import CatehoryCard from '../common/CatehoryCard';
+import CatehoryCard from '../common/CategoryCard';
 
 import { ArrowRight } from 'lucide-react';
 

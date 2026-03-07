@@ -53,6 +53,7 @@ export default function SearchFilter({ className } : Props) {
                         </div>
                         <div className="w-full h-full relative">
                             <select
+                                aria-label="Select Location"
                                 className={`h-11.75 pt-6 sm:border-b border-neutral-200 bg-transparent appearance-none ${
                                     !localLocation ? 'text-neutral-600 opacity-50' : 'text-inherit'
                                 }`}
