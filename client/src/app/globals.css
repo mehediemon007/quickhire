@@ -97,7 +97,7 @@
     padding-inline: 1.25rem
   }
 
-  @variant 2xl {
+  @variant xl {
     padding-inline: 0;
   }
   
