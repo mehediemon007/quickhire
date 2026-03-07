@@ -33,27 +33,27 @@ export default function SearchFilter({ className } : Props) {
                     onSubmit={handleSearch}
                     className="flex flex-col sm:flex-row justify-between"
                 >
-                    <div className="flex-1 flex items-center pr-4">
-                        <span className="inline-flex items-center justify-center w-12">
+                    <div className="flex-1 flex items-end pr-4">
+                        <span className="inline-flex items-center justify-center pb-2 w-12">
                             <Search className="text-neutral-100"/>
                         </span>
                         
                         <input
                             type="text"
-                            className="h-full border-b border-b-neutral-200 placeholder:text-neutral-600 placeholder:opacity-50"
+                            className="h-11.75 pt-6 pb-1 border-b border-b-neutral-200 placeholder:text-neutral-600 placeholder:opacity-50"
                             placeholder="Job title or keyword"
                             value={localSearch}
                             onChange={(e) => setLocalSearch(e.target.value)}
                         />
                     </div>
 
-                    <div className="flex-1 flex items-center pr-4">
-                        <div className="inline-flex items-center justify-center w-12">
+                    <div className="flex-1 flex items-end pr-4">
+                        <div className="inline-flex items-center justify-center pb-2 w-12">
                             <MapPin className="text-neutral-100"/>
                         </div>
                         <div className="w-full h-full relative">
                             <select
-                                className={`h-full border-b border-neutral-200 bg-transparent appearance-none ${
+                                className={`h-11.75 pt-6 sm:border-b border-neutral-200 bg-transparent appearance-none ${
                                     !localLocation ? 'text-neutral-600 opacity-50' : 'text-inherit'
                                 }`}
                                 value={localLocation}
@@ -73,13 +73,13 @@ export default function SearchFilter({ className } : Props) {
                     </div>
                     <button
                         type="submit"
-                        className="btn btn-primary w-52.25 h-14.25 leading-14.25"
+                        className="btn btn-primary w-full sm:w-52.25 h-14.25 leading-14.25"
                     >
                         Search Jobs
                     </button>
                 </form>
             </div>
-            <p className="text-[#202430b3] font-medium mt-4 leading-[1.6]"><span className="font-normal">Popular :</span> UI Designer, UX Researcher, Android, Admin</p>
+            <p className="text-[#202430b3] font-medium mt-4 leading-[1.6]"><span className="block font-normal">Popular :</span> UI Designer, UX Researcher, Android, Admin</p>
         </>
     );
 }

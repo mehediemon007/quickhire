@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Hero from "@/components/home/Hero";
 import Clients from "@/components/home/Clients";
-import JobListings from "@/components/JobListings";
 import Categories from "@/components/home/Categories";
 import FeaturedJobs from "@/components/home/FeaturedJobs";
 import Image from "next/image";

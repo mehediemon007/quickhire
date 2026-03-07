@@ -109,7 +109,7 @@ const FeaturedJobs = () => {
                     </Link>
                 </div>
                 <div>
-                    <div className="flex lg:grid grid-cols-4 gap-4 sm:gap-8">
+                    <div className="flex lg:grid grid-cols-4 gap-4 sm:gap-8 overflow-hidden">
                         {
                             jobs.map((job: Job) => (
                                 <div key={job._id} className='grid-cols-1'>

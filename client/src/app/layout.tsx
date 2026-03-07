@@ -45,7 +45,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
             <body className={`${clashDisplay.variable} ${epilogue.variable} ${inter.variable} antialiased`}>
                 <Providers>
                     <Header />
-                    <main>{children}</main>
+                    <main className="mt-15">{children}</main>
                     <Footer/>
                 </Providers>
                 <ScrollToTop/>
