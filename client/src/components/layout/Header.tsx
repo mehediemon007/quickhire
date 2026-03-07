@@ -48,7 +48,7 @@ export default function Header() {
                             </ul>
                         </nav>
                     </div>
-                    <div>
+                    <div className="xl:hidden">
                         <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="inline-flex justify-center items-center w-8 h-8 bg-white border border-neutral-200 rounded-full">
                             <HamburgerIcon/>
                         </button>
