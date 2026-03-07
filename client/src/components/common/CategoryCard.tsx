@@ -13,7 +13,9 @@ function CatehoryCard({ category } : {category: JobCategory }) {
                 <Image src={category.icon} alt={category.name} fill sizes='100vw' className='transition-colors duration-200 ease-in group-hover:brightness-0 group-hover:invert'/>
             </div>
             <div>
-                <Link href={'#'} className='text-xl/[1.2] sm:text-2xl/[1.2] font-semibold font-title text-neutral-100 transition-colors duration-200 ease-in group-hover:text-white'>{category.name}</Link>
+                <h3 className='text-xl/[1.2] sm:text-2xl/[1.2] font-semibold font-title text-neutral-100 transition-colors duration-200 ease-in group-hover:text-white'>
+                    <Link href={'#'}>{category.name}</Link>
+                </h3>
                 <div className='flex items-center gap-4 mt-0.5 sm:mt-3'>
                     <p className='text-base sm:text-lg/[1.6] text-neutral-600 transition-colors duration-200 ease-in group-hover:text-white'>{category.totalJobs} jobs available</p>
                     <Link href={'#'} aria-label='See Job Category' className='transition-colors duration-200 ease-in group-hover:text-white'><ArrowRight /></Link>

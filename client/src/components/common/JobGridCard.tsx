@@ -12,7 +12,7 @@ function JobGridCard({ job }: { job: Job }) {
                 <Image src={job.logo} alt={job.company} fill sizes='100vw' className='object-contain'/>
             </div>
             <div>
-                <h5>{job.title}</h5>
+                <h3 className='text-lg/[1.6]'>{job.title}</h3>
                 <div className='flex items-center gap-2'>
                     <p className='text-neutral-800'>{job.company}</p>
                     <span className='inline-block w-1 h-1 rounded-full bg-neutral-800 opacity-30'></span>
