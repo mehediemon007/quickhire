@@ -79,7 +79,7 @@ export default function SearchFilter({ className } : Props) {
                     </button>
                 </form>
             </div>
-            <p className="text-[#202430b3] font-medium mt-4 leading-[1.6]"><span className="block font-normal">Popular :</span> UI Designer, UX Researcher, Android, Admin</p>
+            <p className="text-[#202430b3] font-medium mt-4 leading-[1.6]"><span className="block lg:inline-block font-normal">Popular :</span> UI Designer, UX Researcher, Android, Admin</p>
         </>
     );
 }

@@ -99,12 +99,12 @@ const jobs = [
 
 const LatestJobs = () => {
     return (
-        <section className="relative py-18 bg-[#F8F8FD] bg-[url('/assets/images/pattern.svg')] bg-contain bg-right bg-no-repeat">
+        <section className="relative pt-24 pb-10 lg:py-18 bg-[#F8F8FD] bg-[url('/assets/images/pattern.svg')] bg-contain bg-right bg-no-repeat">
             <div className='absolute top-0 left-0 w-0 h-0 border-t-80 border-t-white border-r-120 border-r-transparent'></div>
             <div className="container">
-                <div className='flex justify-between items-end gap-4 mb-12'>
+                <div className='flex justify-between items-end gap-4 mb-6 lg:mb-12'>
                     <h2>Latest <span className='text-accent'>jobs open</span></h2>
-                    <Link href={'#'} className='inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
+                    <Link href={'#'} className='hidden lg:inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
                         <span>Show all jobs</span>
                         <ArrowRight />
                     </Link>
@@ -120,6 +120,7 @@ const LatestJobs = () => {
                         }
                     </div>
                 </div>
+
             </div>
         </section>
     )

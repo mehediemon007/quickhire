@@ -1,9 +1,8 @@
-import Link from "next/link";
 import Hero from "@/components/home/Hero";
 import Clients from "@/components/home/Clients";
 import Categories from "@/components/home/Categories";
+import EmployerCTA from "@/components/home/EmployerCTA";
 import FeaturedJobs from "@/components/home/FeaturedJobs";
-import Image from "next/image";
 import LatestJobs from "@/components/home/LatestJobs";
 
 export default function Home() {
@@ -12,27 +11,7 @@ export default function Home() {
             <Hero />
             <Clients />
             <Categories/>
-            <section>
-                <div className="container px-0">
-                    <div className="flex-col justify-between gap-32 pl-4 sm:px-19.75 pt-17 bg-[url('/assets/images/dashboard-bg.svg')] bg-cover bg-left bg-no-repeat">
-                        <div className="max-w-91 space-y-6">
-                            <h2 className="text-white">Start posting jobs today</h2>
-                            <p className="text-white">Start posting jobs for only $10.</p>
-                            <Link href={'/signup'} className='btn bg-white'>Sign Up For Free</Link>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <Image 
-                                src={'/assets/images/dashboard.jpg'} 
-                                alt="Dashboard" 
-                                width={564}
-                                height={346}
-                                sizes="(max-width: 768px) 100vw, 50vw" 
-                                className="object-cover object-left"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <EmployerCTA/>
             <FeaturedJobs/>
             <LatestJobs/>
             {/* <section className="py-20 bg-slate-50">

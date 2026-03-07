@@ -57,7 +57,7 @@ const categories = [
 
 function Categories() {
     return (
-        <section className='py-18'>
+        <section className='pb-10 lg:py-18'>
             <div className="container">
                 <div className='flex justify-between items-end gap-4 mb-6 sm:mb-12'>
                     <h2>Explore by <span className='text-accent'>category</span></h2>
@@ -67,10 +67,10 @@ function Categories() {
                     </Link>
                 </div>
                 <div>
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                         {
                             categories.map((category) => (
-                                <div key={category.id} className="col-span-1 flex items-center gap-8 border border-neutral-200 p-4 sm:p-8 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">
+                                <div key={category.id} className="col-span-1 flex xl:flex-col items-center xl:items-start gap-8 border border-neutral-200 p-4 sm:p-6 lg:gap-8 transition-colors duration-200 ease-in group hover:bg-primary hover:border-transparent">
                                     <div className='relative w-10 sm:w-12 h-10 sm:h-12 aspect-square'>
                                         <Image src={category.icon} alt={category.name} fill sizes='100vw' className='transition-colors duration-200 ease-in group-hover:brightness-0 group-hover:invert'/>
                                     </div>

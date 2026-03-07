@@ -3,7 +3,7 @@ import SearchFilter from "../SearchFilter";
 
 export default function Hero() {
     return (
-        <section className="relative bg-[#F8F8FD] pt-7 pb-8 overflow-hidden z-10">
+        <section className="relative bg-[#F8F8FD] pt-7 pb-8 lg:pb-0 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-full sm:w-2/3 h-full bg-[url('/assets/images/hero-bg-pattern-sm.svg')] xl:bg-[url('/assets/images/hero-bg-pattern.svg')] bg-right bg-contain bg-no-repeat -z-1"></div>
             <div className="container">
                 <div className="flex items-center gap-14.5">
@@ -15,7 +15,7 @@ export default function Hero() {
                         <p className="max-w-130.25 text-lg/[1.6] sm:text-xl/[1.6] text-[#515b6fb3] my-5.75 sm:my-6">Great platform for the job seeker that searching for new career heights and passionate about startups.</p>
                         <SearchFilter className="z-10"/>
                     </div>
-                    <div className="hidden xl:block">
+                    <div className="hidden lg:block">
                         <div className="relative w-125.25 h-176.75 aspect-501/7071">
                             <Image src={'/assets/images/hero.png'} alt='Hero Image' fill sizes="100vw" priority={true} className="object-cover"/>
                         </div>

@@ -6,7 +6,7 @@ import { Job } from '@/types';
 
 import { ArrowRight } from 'lucide-react';
 
-const jobs = [
+const FEATURED_JOBS = [
     {
         _id: 1,
         title: "Email Marketing",
@@ -99,27 +99,36 @@ const jobs = [
 
 const FeaturedJobs = () => {
     return (
-        <section className='py-18'>
+        <section className='py-10 lg:py-18'>
             <div className="container">
-                <div className='flex justify-between items-end gap-4 mb-12'>
+                <div className='flex justify-between items-end gap-4 mb-6 lg:mb-12'>
                     <h2>Featured <span className='text-accent'>jobs</span></h2>
-                    <Link href={'#'} className='inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
+                    <Link href={'#'} className='hidden lg:inline-flex gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black'>
                         <span>Show all jobs</span>
                         <ArrowRight />
                     </Link>
                 </div>
-                <div>
-                    <div className="flex lg:grid grid-cols-4 gap-4 sm:gap-8 overflow-hidden">
-                        {
-                            jobs.map((job: Job) => (
-                                <div key={job._id} className='grid-cols-1'>
-                                    <JobGridCard job={job}/>
-                                </div>
-                            ))
-                        }
-                    </div>
+            </div>
+
+            <div className="container pr-0">
+                <div className="flex lg:grid lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-8 snap-x snap-mandatory no-scrollbar overflow-x-auto">
+                    {
+                        FEATURED_JOBS.map((job: Job) => (
+                            <div key={job._id} className='w-71.5 lg:w-full shrink-0 snap-start'>
+                                <JobGridCard job={job}/>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
+
+            <div className="container">
+                <Link href={'#'} className='inline-flex lg:hidden gap-4 text-primary font-semibold transition-colors duration-300 ease-in hover:text-black mt-6'>
+                    <span>Show all jobs</span>
+                    <ArrowRight />
+                </Link>
+            </div>
+
         </section>
     )
 }
