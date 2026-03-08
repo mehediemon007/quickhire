@@ -2,9 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+
 import {
     Box,
     Button,
@@ -19,38 +17,25 @@ import {
     Paper,
     Alert,
 } from "@mui/material";
+
 import { api } from "@/lib/api";
 import { useAppDispatch } from "@/hooks/redux";
 import { setAuth } from "@/lib/features/auth/authSlice";
 
-const signupSchema = z
-    .object({
-        fullname: z.string().min(2, "Full name must be at least 2 characters"),
-        email: z.string().email("Invalid email address"),
-        password: z.string().min(6, "Password must be at least 6 characters"),
-        confirmPassword: z.string(),
-        role: z.enum(["employer", "employee"]),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Passwords don't match",
-        path: ["confirmPassword"],
-    });
-
-type SignupForm = z.infer<typeof signupSchema>;
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema, SignupForm } from "@/schemas/authSchema";
 
 export default function SignupPage() {
+
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [error, setError] = useState<string | null>(null);
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<SignupForm>({
+    const { register, handleSubmit, formState: { errors },} = useForm<SignupForm>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
-            role: "employee",
+            role: "candidate",
         },
     });
 
@@ -89,6 +74,7 @@ export default function SignupPage() {
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField
+                            required
                             fullWidth
                             label="Full Name"
                             {...register("fullname")}
