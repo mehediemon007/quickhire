@@ -66,7 +66,7 @@ function Footer() {
                     </div>
                 </div>
                 <div className='flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 sm:pt-10 pb-10'>
-                    <p className='text-[#ffffff80]'>2021 &copy; QuickHire. All rights reserved.</p>
+                    <p className='text-[#ffffff80]'>2026 &copy; QuickHire. All rights reserved.</p>
                     <ul className='flex justify-start lg:justify-between items-center gap-4 sm:gap-6'>
                         <li>
                             <a href='https://www.facebook.com/' target='_blank' aria-label='facebook' className='inline-flex justify-center items-center w-8 h-8 text-white bg-[#ffffff1a] rounded-full transition-colors duration-300 ease-in hover:bg-white hover:text-primary'><FacebookIcon/></a>

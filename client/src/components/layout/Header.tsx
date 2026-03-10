@@ -24,7 +24,7 @@ export default function Header() {
                 "fixed w-full top-0 z-50 transition-transform duration-300 py-3 sm:py-3.5",
                 isScrolled 
                     ? "bg-white lg:animate-fadeInDown shadow-md"
-                    : "bg-[#F8F8FD]"
+                    : "bg-transparent"
             )}
         >
             <div className="container">

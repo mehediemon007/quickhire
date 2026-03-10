@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  
+
   --color-neutral-100: #25324B;
   --color-neutral-200: #D6DDEB;
   --color-neutral-600: #7C8493;
   --color-neutral-800: #515B6F;
+
 }
 
 @theme inline {
@@ -51,7 +52,7 @@
 
   input,
   select {
-    @apply w-full outline-none
+    @apply w-full outline-none text-black
   }
 
   button:not(:disabled),
