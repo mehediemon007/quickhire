@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, { useTransition, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,18 +12,42 @@ import {
     Typography,
     Paper,
     Alert,
+    AlertColor,
     CircularProgress,
+    Snackbar
 } from "@mui/material";
 
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "@/theme";
 
 import { login } from "@/actions/auth.actions";
+import { useForm } from "react-hook-form";
+import { LoginForm, loginSchema } from "@/lib/validations/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function LoginPage() {
 
     const router = useRouter();
-    const [formState, formAction, isPending] = useActionState(login, null);
+
+    const [toaster, setToaster] = useState<{ open: boolean; message: string; severity: AlertColor }>({ open: false, message: "", severity: "success" });
+    const [ isPending, startTransition ] = useTransition();
+
+    const { register, formState: { errors }, handleSubmit} = useForm<LoginForm>({
+        resolver: zodResolver(loginSchema)
+    })
+
+    const onSubmit = async (data: LoginForm) => {
+
+        startTransition(async () => {
+            const result = await login(data);
+
+            if(result.success){
+                setToaster({ open: true, message: result.message, severity: "success" as AlertColor });
+            } else {
+                setToaster({ open: true, message: result.message, severity: "error" as AlertColor });
+            }
+        })
+    }
 
     return (
         <div className="flex justify-center items-center min-h-dvh py-10 lg:py-20">
@@ -43,39 +67,31 @@ export default function LoginPage() {
                                 Login to your QuickHire account.
                             </Typography>
 
-                            {!formState?.success && (
-                                <Alert severity="error" sx={{ mb: 3 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: '500', mb: 1 }}>
-                                        {formState?.message}
-                                    </Typography>
-                                </Alert>
-                            )}
-
-                            <form action={formAction}>
+                            <form onSubmit={handleSubmit(onSubmit)}>
                                 <TextField
                                     fullWidth
                                     label="Email Address"
-                                    name="email"
                                     type="email"
                                     disabled={isPending}
                                     margin="normal"
                                     variant="outlined"
-                                    error={!!formState?.error?.email}
-                                    helperText={formState?.error?.email?.[0]}
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
                                     autoComplete="email"
+                                    {...register("email")}
                                 />
 
                                 <TextField
                                     fullWidth
                                     label="Password"
-                                    name="password"
                                     type="password"
                                     disabled={isPending}
                                     margin="normal"
                                     variant="outlined"
-                                    error={!!formState?.error?.password}
-                                    helperText={formState?.error?.password?.[0]}
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
                                     autoComplete="current-password"
+                                    {...register("password")}
                                 />
 
                                 <Button
@@ -97,7 +113,7 @@ export default function LoginPage() {
                                             onClick={() => router.push("/signup")} 
                                             disabled={isPending}
                                             sx={{ fontWeight: "bold", backgroundColor: "transparent", textTransform: "none", '&:hover': { backgroundColor: 'transparent', textDecoration: 'underline' } }}>
-                                            Sign Up
+                                                Sign Up
                                         </Button>
                                     </Typography>
                                 </Box>
@@ -105,6 +121,16 @@ export default function LoginPage() {
                         </Paper>
                     </Box>
                 </Container>
+                <Snackbar
+                    open={toaster.open}
+                    autoHideDuration={3000}
+                    onClose={() => setToaster(prev => ({ ...prev, open: false }))}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                    <Alert severity={toaster.severity} variant="filled" onClose={() => setToaster(prev => ({ ...prev, open: false }))}>
+                        {toaster.message}
+                    </Alert>
+                </Snackbar>
             </ThemeProvider>
         </div>
     );

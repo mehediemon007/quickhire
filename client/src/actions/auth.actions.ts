@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { loginSchema, SignupForm, signupSchema } from '@/lib/validations/auth.schema';
+import { LoginForm, loginSchema, SignupForm, signupSchema } from '@/lib/validations/auth.schema';
 import { FormState } from '@/types/auth.types';
 
 async function setAccessTokenCookie(accessToken: string) {
@@ -78,22 +78,18 @@ export async function signup(formData: SignupForm): Promise<FormState> {
     
 }
 
-export async function login(prevState: FormState, formData: FormData){
+export async function login(formData: LoginForm): Promise<FormState>{
 
-    const raw = {
-        email: formData.get("email") as string,
-        password: formData.get("password") as string
-    }
-
-    const validatedFields = loginSchema.safeParse(raw);
+    
+    const validatedFields = loginSchema.safeParse(formData);
 
     if(!validatedFields.success){
-        console.log(validatedFields)
 
         return {
             success: false,
             message: "",
-            error: validatedFields.error.flatten().fieldErrors
+            error: "",
+            fieldErrors: validatedFields.error.flatten().fieldErrors
         }
     }
 
@@ -114,6 +110,8 @@ export async function login(prevState: FormState, formData: FormData){
         });
 
         const result = await response.json();
+
+        console.log(result)
 
         if(!response.ok){
             return {
