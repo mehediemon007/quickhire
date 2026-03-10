@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,34 +18,15 @@ import {
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "@/theme";
 
-// import { login, initialLoginState } from "@/actions/auth.actions";
-import { useAppDispatch } from "@/hooks/redux";
-import { setAuth } from "@/lib/features/auth/authSlice";
+import { login } from "@/actions/auth.actions";
 
 export default function LoginPage() {
     const router = useRouter();
-    const dispatch = useAppDispatch();
-    // const [formState, formAction, isPending] = useFormState(login, initialLoginState);
-
-    // Handle successful login
-    useEffect(() => {
-        if (formState.status === 'success' && formState.data?.user && formState.data?.token) {
-            dispatch(setAuth({
-                user: { 
-                    id: formState.data.user._id,
-                    email: formState.data.user.email,
-                    fullname: formState.data.user.fullname,
-                    role: formState.data.user.role,
-                },
-                token: formState.data.token,
-            }));
-            router.push("/");
-        }
-    }, [formState.status, formState.data, dispatch, router]);
+    const [formState, formAction, isPending] = useActionState(login, undefined);
 
     return (
         <div className="flex justify-center items-center min-h-dvh py-10 lg:py-20">
-            {/* <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
                 <Container maxWidth="sm">
                     <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
                         <Link href="/">
@@ -135,7 +115,7 @@ export default function LoginPage() {
                         </Paper>
                     </Box>
                 </Container>
-            </ThemeProvider> */}
+            </ThemeProvider>
         </div>
     );
 }
