@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { SignupForm, signupSchema } from '@/lib/validations/auth.schema';
+import { loginSchema, SignupForm, signupSchema } from '@/lib/validations/auth.schema';
 import { FormState } from '@/types/auth.types';
 
 async function setAccessTokenCookie(accessToken: string) {
@@ -78,10 +78,26 @@ export async function signup(formData: SignupForm): Promise<FormState> {
     
 }
 
-export async function login(formData: FormData){
+export async function login(prevState: FormState, formData: FormData){
 
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const raw = {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string
+    }
+
+    const validatedFields = loginSchema.safeParse(raw);
+
+    if(!validatedFields.success){
+        console.log(validatedFields)
+
+        return {
+            success: false,
+            message: "",
+            error: validatedFields.error.flatten().fieldErrors
+        }
+    }
+
+    const { email, password } = validatedFields.data;
 
     try {
 
@@ -102,12 +118,21 @@ export async function login(formData: FormData){
         if(!response.ok){
             return {
                 success: false,
-                message: "",
+                message: result.message,
                 error: result.error || "Invalid credentials."
             }
         }
 
         await setAccessTokenCookie(result.accessToken);
+
+
+        return {
+            success: true,
+            message: result.message || "Logged In Successful"
+        }
+
+        redirect('/')
+
 
     } catch( error: unknown){
         return {
@@ -116,8 +141,6 @@ export async function login(formData: FormData){
             error: error instanceof Error ? error.message : "Unexpected error.",
         };
     }
-
-    redirect('/')
 
 }
 

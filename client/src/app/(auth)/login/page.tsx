@@ -21,8 +21,9 @@ import theme from "@/theme";
 import { login } from "@/actions/auth.actions";
 
 export default function LoginPage() {
+
     const router = useRouter();
-    const [formState, formAction, isPending] = useActionState(login, undefined);
+    const [formState, formAction, isPending] = useActionState(login, null);
 
     return (
         <div className="flex justify-center items-center min-h-dvh py-10 lg:py-20">
@@ -42,22 +43,11 @@ export default function LoginPage() {
                                 Login to your QuickHire account.
                             </Typography>
 
-                            {formState.status === 'error' && (
+                            {!formState?.success && (
                                 <Alert severity="error" sx={{ mb: 3 }}>
                                     <Typography variant="body2" sx={{ fontWeight: '500', mb: 1 }}>
-                                        {formState.message}
+                                        {formState?.message}
                                     </Typography>
-                                    {formState.errors && Object.entries(formState.errors).length > 0 && (
-                                        <Box component="ul" sx={{ mb: 0, pl: 2, m: 0 }}>
-                                            {Object.entries(formState.errors).map(([field, messages]) => (
-                                                <li key={field}>
-                                                    <Typography variant="caption">
-                                                        {messages[0]}
-                                                    </Typography>
-                                                </li>
-                                            ))}
-                                        </Box>
-                                    )}
                                 </Alert>
                             )}
 
@@ -70,8 +60,8 @@ export default function LoginPage() {
                                     disabled={isPending}
                                     margin="normal"
                                     variant="outlined"
-                                    error={!!formState.errors?.email}
-                                    helperText={formState.errors?.email?.[0]}
+                                    error={!!formState?.error?.email}
+                                    helperText={formState?.error?.email?.[0]}
                                     autoComplete="email"
                                 />
 
@@ -83,8 +73,8 @@ export default function LoginPage() {
                                     disabled={isPending}
                                     margin="normal"
                                     variant="outlined"
-                                    error={!!formState.errors?.password}
-                                    helperText={formState.errors?.password?.[0]}
+                                    error={!!formState?.error?.password}
+                                    helperText={formState?.error?.password?.[0]}
                                     autoComplete="current-password"
                                 />
 
