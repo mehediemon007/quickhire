@@ -1,89 +1,95 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { sendTokenResponse } from "../utils/authUtils.js";
 
-const signup = async (req: Request, res: Response) => {
-    try {
-        const { email, password, role, fullname } = req.body;
+const signupSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+    role: z.enum(["candidate", "employer"]),
+    fullname: z.string().min(2),
+})
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
-        }
+const loginSchema = z.object({
+    email: z.string().email(),
+    password: z.string(),
+})
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+const catchAsync = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next)
+}
 
-        // Create user
-        const newUser = new User({
-            email,
-            password: hashedPassword,
-            role,
-            fullname,
-        });
+const signup = catchAsync(async (req: Request, res: Response) => {
 
-        await newUser.save();
+    const result = signupSchema.safeParse(req.body);
 
-        // Generate JWT
-        const token = jwt.sign(
-            { userId: newUser._id, role: newUser.role },
-            process.env.JWT_SECRET || "default_secret",
-            { expiresIn: "1d" }
-        );
-
-        res.status(201).json({
-            token,
-            user: {
-                id: newUser._id,
-                email: newUser.email,
-                role: newUser.role,
-                fullname: newUser.fullname,
-                isProfileComplete: newUser.isProfileComplete,
-            },
-        });
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
+    if(!result.success){
+        return res.status(400).json({ message: "Validation failed", errors: result.error.flatten().fieldErrors });
     }
-};
 
-const login = async (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
+    const validatedData = result.data;
 
-        // Find user
-        const user: any = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
-
-        // Compare passwords
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
-
-        // Generate JWT
-        const token = jwt.sign(
-            { userId: user._id, role: user.role },
-            process.env.JWT_SECRET || "default_secret",
-            { expiresIn: "1d" }
-        );
-
-        res.status(200).json({
-            token,
-            user: {
-                id: user._id,
-                email: user.email,
-                role: user.role,
-                fullname: user.fullname,
-                isProfileComplete: user.isProfileComplete,
-            },
-        });
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
+    const existingUser = await User.exists({ email: validatedData.email});
+    if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
     }
-};
 
-export default { signup, login };
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
+    const user = await User.create({
+        ...validatedData,
+        password: hashedPassword
+    });
+
+    sendTokenResponse(user, 201, res);
+
+});
+
+const login = catchAsync(async (req: Request, res: Response) => {
+
+    const { email, password } = loginSchema.parse(req.body);
+
+    const user = await User.findOne({email});
+
+    if(!user || !(await bcrypt.compare(password, user.password))){
+        return res.status(401).json({
+            message: "Invalid Credentials"
+        })
+    }
+
+    sendTokenResponse(user, 200, res);
+
+});
+
+const refresh = catchAsync(async (req: Request, res: Response) => {
+    const token = req.cookies.refreshToken;
+
+    if (!token) {
+        return res.status(401).json({ message: "No refresh token" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as { userId: string };
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+        return res.status(401).json({ message: "User not found" });
+    }
+
+    sendTokenResponse(user, 200, res);
+});
+
+const logout = (req: Request, res: Response) => {
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+    })
+
+    res.status(200).json({
+        success: true,
+        message: "Logged out"
+    })
+}
+
+export default { signup, login, refresh, logout };

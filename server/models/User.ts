@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["employer", "employee"],
+      enum: ["employer", "candidate"],
       required: true,
     },
     isProfileComplete: {

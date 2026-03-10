@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
@@ -10,6 +11,7 @@ import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import employerSetupRoutes from "./routes/employerSetupRoutes.js";
+
 
 dotenv.config();
 
@@ -41,6 +43,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 // Request logger
 app.use((req, res, next) => {
@@ -63,8 +66,9 @@ app.get('/api-docs-json', (req, res) => res.json(swaggerDocument));
 // Database Connection
 mongoose
   .connect(process.env.MONGO_URI || "mongodb://localhost:27017/job-board")
-  .then(() => {
+  .then(async () => {
     console.log("Connected to MongoDB");
+    await mongoose.connection.db?.dropDatabase();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
