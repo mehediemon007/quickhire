@@ -4,3 +4,10 @@ export type FormState = {
     error?: string,
     fieldErrors?: Record<string, string[]>
 }
+
+export type SessionPayload = {
+    userId: string;
+    email: string;
+    role: string;
+    expiresAt: Date;
+};

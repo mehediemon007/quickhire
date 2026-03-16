@@ -63,11 +63,15 @@ const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refresh = catchAsync(async (req: Request, res: Response) => {
-    const token = req.cookies.refreshToken;
 
-    if (!token) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader?.startsWith("Bearer ")) {
         return res.status(401).json({ message: "No refresh token" });
     }
+
+
+    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as { userId: string };
 
@@ -76,7 +80,13 @@ const refresh = catchAsync(async (req: Request, res: Response) => {
         return res.status(401).json({ message: "User not found" });
     }
 
-    sendTokenResponse(user, 200, res);
+    const accessToken = jwt.sign(
+        { userId: user._id, email: user.email, role: user.role, fullname: user.fullname },
+        process.env.JWT_ACCESS_SECRET!,
+        { expiresIn: "15m" }
+    );
+
+    res.status(200).json({ success: true, accessToken });
 });
 
 const logout = (req: Request, res: Response) => {

@@ -1,20 +1,10 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { createSession, deleteSession } from '@/lib/auth';
 import { LoginForm, loginSchema, SignupForm, signupSchema } from '@/lib/validations/auth.schema';
 import { FormState } from '@/types/auth.types';
 
-async function setAccessTokenCookie(accessToken: string) {
-    const cookieStore = await cookies();
-    cookieStore.set("access_token", accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-        maxAge: 15 * 60,
-    });
-}
 
 export async function signup(formData: SignupForm): Promise<FormState> {
     
@@ -49,22 +39,22 @@ export async function signup(formData: SignupForm): Promise<FormState> {
 
         const result = await response.json();
 
-        console.log(result)
+        if(response.ok && result.success){
 
-        if(!response.ok){
+            await createSession(result)
+
             return {
-                success: false,
-                message: "",
-                error: result.error || "Failed to create account.",
-                fieldErrors: result.errorMessage || null
+                success: true,
+                message: result.message || "Account created successfully!"
             }
         }
 
         return {
-            success: true,
-            message: result.message || "Account created successfully!"
+            success: false,
+            message: "",
+            error: result.error || "Failed to create account.",
+            fieldErrors: result.errorMessage || null
         }
-
 
     } catch (error: unknown){
 
@@ -111,25 +101,22 @@ export async function login(formData: LoginForm): Promise<FormState>{
 
         const result = await response.json();
 
-        console.log(result)
+        if(response.ok && result.success){
 
-        if(!response.ok){
+            await createSession(result)
+            
             return {
-                success: false,
-                message: result.message,
-                error: result.error || "Invalid credentials."
+                success: true,
+                message: result.message || "Logged In Successful"
             }
+
         }
-
-        await setAccessTokenCookie(result.accessToken);
-
 
         return {
-            success: true,
-            message: result.message || "Logged In Successful"
+            success: false,
+            message: result.message,
+            error: result.error || "Invalid credentials."
         }
-
-        redirect('/')
 
 
     } catch( error: unknown){
@@ -142,27 +129,9 @@ export async function login(formData: LoginForm): Promise<FormState>{
 
 }
 
-export async function refreshAccessToken(): Promise<string | null> {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
-            method: "POST",
-            credentials: "include",
-        });
-
-        const result = await response.json();
-        if (!response.ok) return null;
-
-        await setAccessTokenCookie(result.accessToken);
-        return result.accessToken;
-
-    } catch {
-        return null;
-    }
-}
-
 export async function logout() {
-    const cookieStore = await cookies();
-    cookieStore.delete("access_token");
+    
+    await deleteSession();
 
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
         method: "POST",

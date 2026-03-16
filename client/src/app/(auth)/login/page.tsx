@@ -43,6 +43,9 @@ export default function LoginPage() {
 
             if(result.success){
                 setToaster({ open: true, message: result.message, severity: "success" as AlertColor });
+
+                router.push("/dashboard");
+                
             } else {
                 setToaster({ open: true, message: result.message, severity: "error" as AlertColor });
             }
