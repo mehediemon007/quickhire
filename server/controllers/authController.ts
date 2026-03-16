@@ -81,7 +81,7 @@ const refresh = catchAsync(async (req: Request, res: Response) => {
     }
 
     const accessToken = jwt.sign(
-        { userId: user._id, email: user.email, role: user.role, fullname: user.fullname },
+        { userId: user._id, role: user.role, fullname: user.fullname },
         process.env.JWT_ACCESS_SECRET!,
         { expiresIn: "15m" }
     );

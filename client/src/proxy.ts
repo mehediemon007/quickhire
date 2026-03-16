@@ -36,30 +36,29 @@ export async function proxy(request: NextRequest) {
                 },
             });
 
-        const result = await response.json();
+            const result = await response.json();
 
-        if (response.ok && result.accessToken) {
+            if (response.ok && result.accessToken) {
 
-            const nextResponse = NextResponse.next();
+                const nextResponse = NextResponse.next();
 
-            nextResponse.cookies.set("accessToken", result.accessToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                path: "/",
-                maxAge: 15 * 60,
-            });
+                nextResponse.cookies.set("accessToken", result.accessToken, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 15 * 60,
+                });
 
-            nextResponse.headers.set('x-access-token', result.accessToken);
+                nextResponse.headers.set('x-access-token', result.accessToken);
 
-            return nextResponse;
-        }
+                return nextResponse;
+            }
         } catch (error) {
             console.error("Middleware refresh failed", error);
         }
     }
 
-    // Protect private routes - require authentication
     if (isPrivateRoute && !accessToken && !refreshToken) {
         return NextResponse.redirect(new URL(DEFAULT_REDIRECT, request.url));
     }
