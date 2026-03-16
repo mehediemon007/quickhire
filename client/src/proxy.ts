@@ -1,21 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decodeJwt } from "jose";
 
-const PUBLIC_ROUTES = ["/login", "/signup", "/forgot-password"];
+const PRIVATE_ROUTES = ["/dashboard"];
 const DEFAULT_REDIRECT = "/login";
-const AFTER_LOGIN_REDIRECT = "/dashboard";
 
 export async function proxy(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
-    const isPublicRoute = PUBLIC_ROUTES.some((r) => pathname.startsWith(r));
+    const isPrivateRoute = PRIVATE_ROUTES.some((r) => pathname.startsWith(r));
 
     const accessToken = request.cookies.get('accessToken')?.value;
     const refreshToken = request.cookies.get('refreshToken')?.value;
-
-    if(isPublicRoute){
-        return NextResponse.next();
-    }
 
     let isExpired = false;
 
@@ -64,8 +59,8 @@ export async function proxy(request: NextRequest) {
         }
     }
 
-    if (!accessToken && !refreshToken && !isPublicRoute) {
-        console.log(accessToken, refreshToken, isPublicRoute)
+    // Protect private routes - require authentication
+    if (isPrivateRoute && !accessToken && !refreshToken) {
         return NextResponse.redirect(new URL(DEFAULT_REDIRECT, request.url));
     }
 
