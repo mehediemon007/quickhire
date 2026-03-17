@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useTransition } from "react";
+import React, { useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,18 +17,34 @@ import {
     TextField,
     Typography,
     Paper,
-    Alert,
     CircularProgress,
+    Link as MuiLink
 } from "@mui/material";
 
-import { ThemeProvider } from '@mui/material/styles';
-import theme from "@/theme";
+import { User, Building2, CircleCheck } from "lucide-react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupForm, signupSchema } from "@/lib/validations/auth.schema";
 
 import { signup } from "@/actions/auth.actions";
+import SocialAuthButtons from "../_components/SocialAuthButtons";
+import PasswordField from "../_components/PasswordField";
+
+const roles = [
+    {
+        value: 'employee',
+        title: 'Employee',
+        description: 'Looking for job opportunities',
+        icon: <User size={18}/>,
+    },
+    {
+        value: 'organization',
+        title: 'Organization',
+        description: 'Hiring talented professionals',
+        icon: <Building2 size={18}/>,
+    },
+];
 
 export default function SignupPage() {
     const router = useRouter();
@@ -42,7 +58,7 @@ export default function SignupPage() {
             email: "",
             password: "",
             confirmPassword: "",
-            role: "candidate"
+            role: "employee"
         }
     })
 
@@ -52,162 +68,187 @@ export default function SignupPage() {
 
             const result = await signup(data);
 
-            if(!result.success){
-                console.log(result.error)
+            if(result.success){
+                router.push("/dashboard")
+            } else {
+                console.error("Signup failed:", result.error)
             }
-
-            router.push("/dashboard")
         })
     }
+
+    const selectedRole = useWatch({ control, name: "role" })
     
     return (
-        <div className="flex justify-center items-center min-h-dvh py-10 lg:py-20">
-            <ThemeProvider theme={theme}>
-                <Container maxWidth="sm">
-                    <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
-                        <Link href="/">
-                            <Image src="/assets/images/logo.svg" alt="Quick Hire" width={152} height={36} priority />
-                        </Link>
-                    </Box>
-                    <Box>
-                        <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-                            <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: "bold", color: "primary.main" }}>
-                                Create Account
-                            </Typography>
-                            <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 4 }}>
-                                Join QuickHire and find your dream job or talent.
-                            </Typography>
+        <div className="flex justify-center items-center min-h-dvh py-10 lg:py-12">
+            <Container maxWidth="sm">
+                <Box>
+                    <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+                        <Box sx={{ mb: 1, display: 'flex', justifyContent: 'center' }}>
+                            <Link href="/">
+                                <Image src="/assets/images/logo.svg" alt="Quick Hire" width={152} height={36} priority />
+                            </Link>
+                        </Box>
+                        <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 2.75 }}>
+                            Join and find your dream job or talent.
+                        </Typography>
 
-                            {/* {formState.status === 'error' && (
-                                <Alert severity="error" sx={{ mb: 3 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: '500', mb: 1 }}>
-                                        {formState.message}
-                                    </Typography>
-                                    {formState.errors && Object.entries(formState.errors).length > 0 && (
-                                        <Box component="ul" sx={{ mb: 0, pl: 2, m: 0 }}>
-                                            {Object.entries(formState.errors).map(([field, messages]) => (
-                                                <li key={field}>
-                                                    <Typography variant="caption">
-                                                        {messages[0]}
-                                                    </Typography>
-                                                </li>
-                                            ))}
+                        <form onSubmit={handleSubmit(onsubmit)}>
+
+                            <FormControl error={!!errors.role} sx={{mb: 2.5}}>
+                                <FormLabel component="label" sx={{mb: 1}}>Join as</FormLabel>
+
+                                <Controller
+                                    name="role"
+                                    control={control}
+                                    defaultValue="employee"
+                                    render={({ field }) => (
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+
+                                            {roles.map((role) => {
+                                                const isSelected = field.value === role.value;
+
+                                                return (
+                                                    <Box
+                                                        key={role.value}
+                                                        onClick={() => !isPending && field.onChange(role.value)}
+                                                        sx={{
+                                                            position: 'relative',
+                                                            flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 6px)' },
+                                                            display: 'flex',
+                                                            alignItems: 'start',
+                                                            gap: 1.5,
+                                                            px: 2,
+                                                            py:1.5,
+                                                            cursor: isPending ? 'not-allowed' : 'pointer',
+                                                            borderRadius: '16px',
+                                                            border: '1px solid #dadce0',
+                                                            transition: 'all 0.2s ease',
+                                                            borderColor: isSelected ? 'primary.main' : '#dadce0',
+                                                            backgroundColor: isSelected ? 'rgba(25, 118, 210, 0.04)' : 'transparent',
+                                                            '&:hover': {
+                                                                backgroundColor: 'rgba(25, 118, 210, 0.04)',
+                                                            },
+                                                        }}
+                                                    >
+                                                        {isSelected && (
+                                                            <Box
+                                                                sx={{
+                                                                    position: 'absolute',
+                                                                    top: 12,
+                                                                    right: 12,
+                                                                    color: 'primary.main',
+                                                                }}
+                                                            >
+                                                                <CircleCheck size={20} />
+                                                            </Box>
+                                                        )}
+
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                flexShrink:0,
+                                                                width: 40,
+                                                                height: 40,
+                                                                borderRadius: '8px',
+                                                                backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                                                                color: 'primary.main',
+                                                            }}
+                                                        >
+                                                            {role.icon}
+                                                        </Box>
+
+                                                        <Box>
+                                                            <Typography variant="subtitle1" color="#202430" sx={{ fontWeight: 600, lineHeight: 1.2, fontSize: '14px' }}>
+                                                                {role.title}
+                                                            </Typography>
+                                                            <Typography variant="caption" sx={{ color: 'text.secondary', display: 'inline-block', lineHeight: 1.5, mt: 0.25 }}>
+                                                                {role.description}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Box>
+                                                );
+                                            })}
                                         </Box>
                                     )}
-                                </Alert>
-                            )} */}
-
-                            <form onSubmit={handleSubmit(onsubmit)}>
-                                <TextField
-                                    fullWidth
-                                    label="Full Name"
-                                    disabled={isPending}
-                                    error={!!errors?.fullname}
-                                    helperText={errors?.fullname?.message}
-                                    margin="normal"
-                                    variant="outlined"
-                                    autoComplete="name"
-                                    {...register("fullname")}
                                 />
-
-                                <TextField
-                                    fullWidth
-                                    label="Email Address"
-                                    type="email"
-                                    disabled={isPending}
-                                    error={!!errors?.email}
-                                    helperText={errors.email?.message}
-                                    margin="normal"
-                                    variant="outlined"
-                                    autoComplete="email"
-                                    {...register("email")}
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    label="Password"
-                                    type="password"
-                                    disabled={isPending}
-                                    error={!!errors?.password}
-                                    helperText={errors?.password?.message}
-                                    margin="normal"
-                                    variant="outlined"
-                                    autoComplete="new-password"
-                                    {...register("password")}
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    label="Confirm Password"
-                                    type="password"
-                                    disabled={isPending}
-                                    error={!!errors.confirmPassword}
-                                    helperText={errors.confirmPassword?.message}
-                                    margin="normal"
-                                    variant="outlined"
-                                    autoComplete="new-password"
-                                    {...register("confirmPassword")}
-                                />
-
-                                <FormControl component="fieldset" sx={{ mt: 2, mb: 1 }} error={!!errors.role}>
-                                    <FormLabel component="legend">Join as</FormLabel>
-
-                                    <Controller
-                                        name="role"
-                                        control={control}
-                                        defaultValue="candidate"
-                                        render={({field}) => (
-                                            <RadioGroup row {...field}>
-                                                <FormControlLabel
-                                                    value="candidate"
-                                                    control={<Radio disabled={isPending} />}
-                                                    label="Candidate"
-                                                />
-                                                <FormControlLabel
-                                                    value="employer"
-                                                    control={<Radio disabled={isPending} />}
-                                                    label="Employer"
-                                                />
-                                            </RadioGroup>
-                                        )}
                                 
-                                    />
-                                    
-                                    {errors?.role && (
-                                        <Typography variant="caption" color="error">
-                                            {errors.role.message}
-                                        </Typography>
-                                    )}
-                                </FormControl>
-
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    size="large"
-                                    disabled={isPending}
-                                    sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: "bold" }}
-                                >
-                                    {isPending ? <CircularProgress size={24} /> : "Sign Up"}
-                                </Button>
-
-                                <Box sx={{ textAlign: "center", mt: 2 }}>
-                                    <Typography variant="body2">
-                                        Already have an account?{" "}
-                                        <Button 
-                                            color="primary" 
-                                            onClick={() => router.push("/login")} 
-                                            disabled={isPending}
-                                            sx={{ fontWeight: "bold", backgroundColor: "transparent", textTransform: "none", '&:hover': { backgroundColor: 'transparent', textDecoration: 'underline' } }}>
-                                            Login
-                                        </Button>
+                                {errors?.role && (
+                                    <Typography variant="caption" color="error">
+                                        {errors.role.message}
                                     </Typography>
-                                </Box>
-                            </form>
-                        </Paper>
-                    </Box>
-                </Container>
-            </ThemeProvider>
+                                )}
+                            </FormControl>
+
+                            <TextField
+                                fullWidth
+                                label="Full Name"
+                                disabled={isPending}
+                                error={!!errors?.fullname}
+                                helperText={errors?.fullname?.message}
+                                variant="outlined"
+                                autoComplete="name"
+                                {...register("fullname")}
+                            />
+
+                            <TextField
+                                fullWidth
+                                label="Email Address"
+                                type="email"
+                                disabled={isPending}
+                                error={!!errors?.email}
+                                helperText={errors.email?.message}
+                                variant="outlined"
+                                autoComplete="email"
+                                {...register("email")}
+                            />
+
+                            <PasswordField 
+                                name="password"
+                                register={register}
+                                error={errors?.password}
+                                disabled={isPending}
+                                autoComplete="new-password"
+                            />
+
+                            <PasswordField 
+                                name="confirmPassword"
+                                label="Confirm Password"
+                                register={register}
+                                error={errors.confirmPassword}
+                                disabled={isPending}
+                                autoComplete="new-password"
+                            />
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                size="large"
+                                disabled={isPending}
+                                sx={{ height: 48, fontWeight: "bold" }}
+                            >
+                                {isPending ? <CircularProgress size={24} /> : "Sign Up"}
+                            </Button>
+                        </form>
+                        <SocialAuthButtons role={selectedRole}/>
+                        <Box sx={{ textAlign: "center", mt: 2.5}}>
+                            <Typography variant="body2" color="text.secondary">
+                                Already have an account?{" "}
+                                <MuiLink 
+                                    component={Link}
+                                    href={'/login'} 
+                                    color="primary"
+                                    underline="hover" 
+                                    sx={{ fontWeight: "bold"}}>
+                                    Login
+                                </MuiLink>
+                            </Typography>
+                        </Box>
+                    </Paper>
+                </Box>
+            </Container>
         </div>
     );
 }

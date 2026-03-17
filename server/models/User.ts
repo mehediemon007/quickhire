@@ -1,6 +1,20 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+export interface IUser extends Document {
+  fullname: string;
+  email: string;
+  password?: string;
+  role?: "employee" | "organization";
+  provider: "local" | "google" | "apple";
+  providerId?: string;
+  isProfileComplete: boolean;
+  refreshToken?: string;
+  avatar?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const userSchema: Schema = new Schema(
   {
     email: {
       type: String,
@@ -16,21 +30,31 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function (this: IUser) {
+        return this.provider === "local";
+      },
     },
     role: {
       type: String,
-      enum: ["employer", "candidate"],
-      required: true,
+      enum: ["organization", "employee"],
+      default: null,
     },
+    provider: {
+      type: String,
+      enum: ["local", "google", "apple"],
+      default: "local",
+    },
+    providerId: { type: String },
     isProfileComplete: {
       type: Boolean,
       default: false,
     },
+    refreshToken: { type: String, select: false },
+    avatar: { type: String },
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<IUser>("User", userSchema);

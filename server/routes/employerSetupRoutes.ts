@@ -5,7 +5,7 @@ import { authenticate, authorize } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // All routes require authenticated employer
-router.use(authenticate, authorize(["employer"]));
+router.use(authenticate, authorize(["organization"]));
 
 router.post("/setup", setupEmployer);
 router.get("/profile", getEmployerProfile);

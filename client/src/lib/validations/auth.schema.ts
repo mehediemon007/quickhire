@@ -12,7 +12,7 @@ export const signupSchema = z.object({
     email: z.string().email('Invalid email address'),
     password: passwordSchema,
     confirmPassword: z.string(),
-    role: z.enum(['candidate', 'employer'], { message: 'Please select a valid role' })
+    role: z.enum(['employee', 'organization'], { message: 'Please select a valid role' })
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],

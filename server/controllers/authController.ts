@@ -8,7 +8,7 @@ import { sendTokenResponse } from "../utils/authUtils.js";
 const signupSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
-    role: z.enum(["candidate", "employer"]),
+    role: z.enum(["employee", "organization"]),
     fullname: z.string().min(2),
 })
 
@@ -42,7 +42,7 @@ const signup = catchAsync(async (req: Request, res: Response) => {
         password: hashedPassword
     });
 
-    sendTokenResponse(user, 201, res);
+    await sendTokenResponse(user, 201, res);
 
 });
 
@@ -52,13 +52,13 @@ const login = catchAsync(async (req: Request, res: Response) => {
 
     const user = await User.findOne({email});
 
-    if(!user || !(await bcrypt.compare(password, user.password))){
+    if(!user || user.provider !== "local" || !user.password || !(await bcrypt.compare(password, user.password))){
         return res.status(401).json({
             message: "Invalid Credentials"
         })
     }
 
-    sendTokenResponse(user, 200, res);
+    await sendTokenResponse(user, 200, res);
 
 });
 
@@ -75,13 +75,19 @@ const refresh = catchAsync(async (req: Request, res: Response) => {
 
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as { userId: string };
 
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-        return res.status(401).json({ message: "User not found" });
+    const user = await User.findById(decoded.userId).select("+refreshToken");
+    if (!user || user.refreshToken !== token) {
+        return res.status(401).json({ message: "Invalid refresh token" });
     }
 
     const accessToken = jwt.sign(
-        { userId: user._id, role: user.role, fullname: user.fullname },
+        { 
+            userId: user._id, 
+            role: user.role, 
+            fullname: user.fullname, 
+            email: user.email, 
+            isProfileComplete: user.isProfileComplete 
+        },
         process.env.JWT_ACCESS_SECRET!,
         { expiresIn: "15m" }
     );
@@ -89,7 +95,19 @@ const refresh = catchAsync(async (req: Request, res: Response) => {
     res.status(200).json({ success: true, accessToken });
 });
 
-const logout = (req: Request, res: Response) => {
+const logout = catchAsync(async (req: Request, res: Response) => {
+    
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.split(" ")[1];
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as { userId: string };
+            await User.findByIdAndUpdate(decoded.userId, { refreshToken: null });
+        } catch (err) {
+            // Ignore token verification errors on logout
+        }
+    }
+
     res.clearCookie("refreshToken", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -100,6 +118,6 @@ const logout = (req: Request, res: Response) => {
         success: true,
         message: "Logged out"
     })
-}
+});
 
 export default { signup, login, refresh, logout };

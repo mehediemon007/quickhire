@@ -1,21 +1,16 @@
-import { Request, Response } from "express";
+import { Response, Request, RequestHandler } from "express";
 import Company from "../models/Company.js";
 import EmployerProfile from "../models/EmployerProfile.js";
 import User from "../models/User.js";
 import { employerSetupSchema, companySetupSchema, employerProfileSetupSchema } from "../validators/index.js";
 import { z } from "zod";
+import { AuthRequest } from "../middleware/authMiddleware.js";
 
-interface AuthRequest extends Request {
-    user?: {
-        userId: string;
-        role: string;
-    };
-}
-
-// POST /api/employer/setup — Create company + profile in one request
-export const setupEmployer = async (req: AuthRequest, res: Response): Promise<void> => {
+// POST /api/organization/setup — Create company + profile in one request
+export const setupEmployer: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     try {
-        const userId = req.user?.userId;
+        const authReq = req as AuthRequest;
+        const userId = authReq.user?.userId;
 
         // Check if setup already completed
         const existingCompany = await Company.findOne({ user: userId });
@@ -44,7 +39,7 @@ export const setupEmployer = async (req: AuthRequest, res: Response): Promise<vo
         await User.findByIdAndUpdate(userId, { isProfileComplete: true });
 
         res.status(201).json({
-            message: "Employer setup completed successfully",
+            message: "Organization setup completed successfully",
             company,
             profile,
         });
@@ -52,36 +47,38 @@ export const setupEmployer = async (req: AuthRequest, res: Response): Promise<vo
         if (error instanceof z.ZodError) {
             res.status(400).json({ message: "Validation failed", errors: error.issues });
         } else {
-            console.error("Employer Setup Error:", error);
+            console.error("Organization Setup Error:", error);
             res.status(500).json({ message: error.message || "Server Error" });
         }
     }
 };
 
-// GET /api/employer/profile — Get employer's company and profile
-export const getEmployerProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+// GET /api/organization/profile — Get employer's company and profile
+export const getEmployerProfile: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     try {
-        const userId = req.user?.userId;
+        const authReq = req as AuthRequest;
+        const userId = authReq.user?.userId;
 
         const company = await Company.findOne({ user: userId });
         const profile = await EmployerProfile.findOne({ user: userId });
 
         if (!company && !profile) {
-            res.status(404).json({ message: "Employer profile not found. Please complete setup." });
+            res.status(404).json({ message: "Organization profile not found. Please complete setup." });
             return;
         }
 
         res.json({ company, profile });
     } catch (error: any) {
-        console.error("Get Employer Profile Error:", error);
+        console.error("Get Organization Profile Error:", error);
         res.status(500).json({ message: error.message || "Server Error" });
     }
 };
 
-// PUT /api/employer/profile — Update company and/or profile
-export const updateEmployerProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+// PUT /api/organization/profile — Update company and/or profile
+export const updateEmployerProfile: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     try {
-        const userId = req.user?.userId;
+        const authReq = req as AuthRequest;
+        const userId = authReq.user?.userId;
         const { company: companyData, profile: profileData } = req.body;
 
         let updatedCompany = null;
@@ -122,7 +119,7 @@ export const updateEmployerProfile = async (req: AuthRequest, res: Response): Pr
         if (error instanceof z.ZodError) {
             res.status(400).json({ message: "Validation failed", errors: error.issues });
         } else {
-            console.error("Update Employer Profile Error:", error);
+            console.error("Update Organization Profile Error:", error);
             res.status(500).json({ message: error.message || "Server Error" });
         }
     }

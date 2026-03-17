@@ -42,7 +42,7 @@ export default function ApplyForm({ jobId }: { jobId: string | number }) {
         <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
         <h3 className="text-xl font-bold text-green-900 mb-2">Application Submitted!</h3>
         <p className="text-green-700">
-          Thank you for applying. The employer will review your application shortly.
+          Thank you for applying. The organization will review your application shortly.
         </p>
       </div>
     );

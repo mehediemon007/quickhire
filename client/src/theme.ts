@@ -13,6 +13,13 @@ const theme = createTheme({
     },
 
     components: {
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    marginBottom: 20,
+                },
+            },
+        },
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
@@ -22,7 +29,7 @@ const theme = createTheme({
                     borderRadius: 12,
                     color: '#202430',
                     '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#D6DDEB',
+                        borderColor: '#dadce0',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                         borderColor: 'var(--color-primary)'
@@ -95,10 +102,20 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     fontFamily: 'var(--font-epilogue)',
+                    fontWeight: 400,
                     borderRadius: 12,
                     backgroundColor: 'var(--color-primary)',
+                    textTransform: 'none',
                     '&:hover': {
                         backgroundColor: '#3530C4'
+                    }
+                },
+                outlined: {
+                    color: '#202430',
+                    backgroundColor: 'transparent',
+                    borderColor: '#dadce0',
+                    '&:hover': {
+                        backgroundColor: '#f5f5f5'
                     }
                 }
             }
@@ -139,6 +156,9 @@ const theme = createTheme({
                 subtitle2: {
                     fontFamily: 'var(--font-epilogue)',
                 },
+                caption: {
+                    fontFamily: 'var(--font-epilogue)',
+                }   
             },
         }
     }
