@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get(
     "/",
-    (req, res, next) => {
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
         /*
             #swagger.tags = ['Jobs']
             #swagger.summary = 'Get all jobs'
@@ -65,7 +65,7 @@ router.get(
 
 router.get(
     "/:id",
-    (req, res, next) => {
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
         /*
             #swagger.tags = ['Jobs']
             #swagger.summary = 'Get a job by ID'
@@ -107,11 +107,11 @@ router.get(
     getJobById
 );
 
-// ─── Employer-Only Routes ─────────────────────────────────────────────────────
+// ─── Organization-Only Routes ──────────────────────────────────────────────────
 
 router.post(
     "/",
-    (req, res, next) => {
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
         /*
             #swagger.tags = ['Jobs']
             #swagger.summary = 'Create a new job posting'
@@ -193,13 +193,13 @@ router.post(
         next();
     },
     authenticate,
-    authorize(["employer"]),
-    createJob
+    authorize(["organization"]),
+    createJob as any
 );
 
 router.get(
     "/my/posted",
-    (req, res, next) => {
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
         /*
             #swagger.tags = ['Jobs']
             #swagger.summary = 'Get my posted jobs'
@@ -244,13 +244,13 @@ router.get(
         next();
     },
     authenticate,
-    authorize(["employer"]),
-    getMyJobs
+    authorize(["organization"]),
+    getMyJobs as any
 );
 
 router.delete(
     "/:id",
-    (req, res, next) => {
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
         /*
             #swagger.tags = ['Jobs']
             #swagger.summary = 'Delete a job posting'
@@ -311,8 +311,8 @@ router.delete(
         next();
     },
     authenticate,
-    authorize(["employer"]),
-    deleteJob
+    authorize(["organization"]),
+    deleteJob as any
 );
 
 export default router;
