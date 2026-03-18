@@ -254,7 +254,7 @@ export default function SignupPage() {
                                 {isPending ? <CircularProgress size={24} /> : "Sign Up"}
                             </Button>
                         </form>
-                        <SocialAuthButtons role={selectedRole}/>
+
                         <Box sx={{ textAlign: "center", mt: 2.5}}>
                             <Typography variant="body2" color="text.secondary">
                                 Already have an account?{" "}

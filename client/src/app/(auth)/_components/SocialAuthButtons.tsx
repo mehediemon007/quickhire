@@ -58,9 +58,7 @@ function SocialAuthButtons({ role }: Props) {
     };
     
     const isDisabled = role === undefined ? false : !role;
-    const isSignup = !!role;
-
-
+    
     return (
         <>
             <Divider sx={{my: 2}}>
@@ -69,7 +67,7 @@ function SocialAuthButtons({ role }: Props) {
                 </Typography>
             </Divider>
 
-            {isSignup && isDisabled && (
+            {isDisabled && (
                 <Alert severity="info" sx={{ mb: 2, borderRadius: 2 }}>
                     Please select a role above before continuing with Google or Apple.
                 </Alert>
@@ -85,7 +83,7 @@ function SocialAuthButtons({ role }: Props) {
                     sx={{ gap: '4px'}}
                 >
                     <GoogleIcon/>
-                    {isSignup ? "Sign up with Google" : "Continue with Google"}
+                    Continue with Google
                 </Button>
                 <Button
                     fullWidth
@@ -101,7 +99,7 @@ function SocialAuthButtons({ role }: Props) {
                             boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px' } }}
                 >
                     <AppleIcon/>
-                    {isSignup ? "Sign up with Apple" : "Sign in with Apple"}
+                    Sign in with Apple
                 </Button>
             </Stack>
         </>

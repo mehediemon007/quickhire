@@ -86,12 +86,12 @@ export default function LoginPage() {
                             </Link>
                         </Box>
                         <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 2.75 }}>
-                            Log in your account.
+                            Sign in to your account.
                         </Typography>
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <FormControl error={!!errors.role} sx={{mb: 2.5, width: '100%'}}>
-                                <FormLabel component="label" sx={{mb: 1}}>Login as</FormLabel>
+                                <FormLabel component="label" sx={{mb: 1, fontSize: '14px', fontWeight: 700}}>Sign in as</FormLabel>
                                 <Controller
                                     name="role"
                                     control={control}
