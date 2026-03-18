@@ -21,7 +21,7 @@ passport.use(
 
                 const role = (req.query.state as string) ?? null;
                 const validROles = ["employee", "organization"];
-                const assignROle = validROles.includes(role) ? role : "";
+                const assignROle = validROles.includes(role) ? role : null;
 
                 let user = await User.findOne({ email });
 

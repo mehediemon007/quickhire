@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   role?: "employee" | "organization";
+  organizationName?: string;
   provider: "local" | "google" | "apple";
   providerId?: string;
   isProfileComplete: boolean;
@@ -36,8 +37,13 @@ const userSchema: Schema = new Schema(
     },
     role: {
       type: String,
-      enum: ["organization", "employee"],
-      default: null,
+      enum: ["employee", "organization"],
+      required: true,
+    },
+    organizationName: {
+      type: String,
+      trim: true,
+      default: "",
     },
     provider: {
       type: String,

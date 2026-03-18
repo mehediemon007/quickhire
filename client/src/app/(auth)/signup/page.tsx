@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useTransition, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,10 @@ import {
     Typography,
     Paper,
     CircularProgress,
-    Link as MuiLink
+    Link as MuiLink,
+    Alert,
+    AlertColor,
+    Snackbar
 } from "@mui/material";
 
 import { User, Building2, CircleCheck } from "lucide-react";
@@ -49,12 +52,14 @@ const roles = [
 export default function SignupPage() {
     const router = useRouter();
 
+    const [toaster, setToaster] = useState<{ open: boolean; message: string; severity: AlertColor }>({ open: false, message: "", severity: "success" });
     const [ isPending, startTransition] = useTransition();
     
     const { register, handleSubmit, formState: { errors }, control} = useForm<SignupForm>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
             fullname: "",
+            organizationName: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -69,8 +74,10 @@ export default function SignupPage() {
             const result = await signup(data);
 
             if(result.success){
+                setToaster({ open: true, message: result.message, severity: "success" as AlertColor });
                 router.push("/dashboard")
             } else {
+                setToaster({ open: true, message: result.message || result.error || "Signup failed", severity: "error" as AlertColor });
                 console.error("Signup failed:", result.error)
             }
         })
@@ -181,14 +188,29 @@ export default function SignupPage() {
                                 )}
                             </FormControl>
 
+                            {selectedRole === "organization" && (
+                                <TextField
+                                    fullWidth
+                                    label="Organization Name"
+                                    disabled={isPending}
+                                    error={!!errors?.organizationName}
+                                    helperText={errors?.organizationName?.message}
+                                    variant="outlined"
+                                    autoComplete="organization"
+                                    sx={{ mb: 2.5 }}
+                                    {...register("organizationName")}
+                                />
+                            )}
+
                             <TextField
                                 fullWidth
-                                label="Full Name"
+                                label={selectedRole === "organization" ? "Your Full Name" : "Full Name"}
                                 disabled={isPending}
                                 error={!!errors?.fullname}
                                 helperText={errors?.fullname?.message}
                                 variant="outlined"
                                 autoComplete="name"
+                                sx={{ mb: 2.5 }}
                                 {...register("fullname")}
                             />
 
@@ -249,6 +271,16 @@ export default function SignupPage() {
                     </Paper>
                 </Box>
             </Container>
+            <Snackbar
+                open={toaster.open}
+                autoHideDuration={3000}
+                onClose={() => setToaster(prev => ({ ...prev, open: false }))}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert severity={toaster.severity} variant="filled" onClose={() => setToaster(prev => ({ ...prev, open: false }))}>
+                    {toaster.message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

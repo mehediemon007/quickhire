@@ -10,11 +10,13 @@ const signupSchema = z.object({
     password: z.string().min(6),
     role: z.enum(["employee", "organization"]),
     fullname: z.string().min(2),
+    organizationName: z.string().optional()
 })
 
 const loginSchema = z.object({
     email: z.string().email(),
     password: z.string(),
+    role: z.enum(["employee", "organization"]),
 })
 
 const catchAsync = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
@@ -31,7 +33,7 @@ const signup = catchAsync(async (req: Request, res: Response) => {
 
     const validatedData = result.data;
 
-    const existingUser = await User.exists({ email: validatedData.email});
+    const existingUser = await User.exists({ email: validatedData.email });
     if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
     }
@@ -48,13 +50,13 @@ const signup = catchAsync(async (req: Request, res: Response) => {
 
 const login = catchAsync(async (req: Request, res: Response) => {
 
-    const { email, password } = loginSchema.parse(req.body);
+    const { email, password, role } = loginSchema.parse(req.body);
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
-    if(!user || user.provider !== "local" || !user.password || !(await bcrypt.compare(password, user.password))){
+    if(!user || user.provider !== "local" || !user.password || user.role !== role || !(await bcrypt.compare(password, user.password))){
         return res.status(401).json({
-            message: "Invalid Credentials"
+            message: "Invalid Credentials or Role"
         })
     }
 

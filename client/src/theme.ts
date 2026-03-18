@@ -69,6 +69,9 @@ const theme = createTheme({
                     '&.Mui-focused': {
                         color: 'var(--color-primary)'
                     },
+                    '&.Mui-error': {
+                        color: '#7C8493'
+                    },
                     '&.Mui-error.Mui-focused': {
                         color: '#d32f2f'
                     }

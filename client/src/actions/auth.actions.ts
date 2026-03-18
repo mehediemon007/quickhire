@@ -20,7 +20,7 @@ export async function signup(formData: SignupForm): Promise<FormState> {
         }
     }
 
-    const { fullname, email, password, role } = validatedFields.data;
+    const { fullname, organizationName, email, password, role } = validatedFields.data;
 
     try {
 
@@ -31,6 +31,7 @@ export async function signup(formData: SignupForm): Promise<FormState> {
             },
             body: JSON.stringify({
                 fullname,
+                organizationName,
                 email,
                 password,
                 role
@@ -51,7 +52,7 @@ export async function signup(formData: SignupForm): Promise<FormState> {
 
         return {
             success: false,
-            message: "",
+            message: result.message,
             error: result.error || "Failed to create account.",
             fieldErrors: result.errorMessage || null
         }
@@ -83,7 +84,7 @@ export async function login(formData: LoginForm): Promise<FormState>{
         }
     }
 
-    const { email, password } = validatedFields.data;
+    const { email, password, role } = validatedFields.data;
 
     try {
 
@@ -94,7 +95,8 @@ export async function login(formData: LoginForm): Promise<FormState>{
             },
             body: JSON.stringify({
                 email,
-                password
+                password,
+                role
             }),
             credentials: "include",
         });
