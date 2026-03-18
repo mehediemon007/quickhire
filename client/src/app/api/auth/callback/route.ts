@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
 
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
     if (!accessToken || !refreshToken) {
         return NextResponse.redirect(

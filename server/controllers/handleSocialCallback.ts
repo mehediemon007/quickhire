@@ -7,7 +7,7 @@ export const handleSocialCallback = async (req: Request, res: Response) => {
     const user = req.user as any;
 
     if (!user) {
-        return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+        return res.redirect(`${process.env.CLIENT_URL}/login?error=auth_failed`);
     }
 
     const accessToken = jwt.sign(
@@ -32,7 +32,7 @@ export const handleSocialCallback = async (req: Request, res: Response) => {
     await User.findByIdAndUpdate(user._id, { refreshToken });
 
     return res.redirect(
-        `${process.env.FRONTEND_URL}/api/auth/callback` +
+        `${process.env.CLIENT_URL}/api/auth/callback` +
         `?accessToken=${accessToken}` +
         `&refreshToken=${refreshToken}`
     );
