@@ -7,6 +7,7 @@ type Props = {
     role?: "employee" | "organization"
 }
 
+
 import { useRouter } from 'next/navigation';
 
 function SocialAuthButtons({ role }: Props) {
@@ -33,7 +34,6 @@ function SocialAuthButtons({ role }: Props) {
 
         const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/google${params.toString() ? `?${params}` : ""}`;
         
-        // Popup configuration
         const width = 500;
         const height = 600;
         const left = window.screenX + (window.innerWidth - width) / 2;
@@ -49,7 +49,6 @@ function SocialAuthButtons({ role }: Props) {
         }
         const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/apple${params.toString() ? `?${params}` : ""}`;
         
-        // Popup configuration
         const width = 500;
         const height = 600;
         const left = window.screenX + (window.innerWidth - width) / 2;

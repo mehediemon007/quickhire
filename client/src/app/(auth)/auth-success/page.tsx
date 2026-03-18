@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Snackbar, Alert, Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 export default function AuthSuccessPage() {
     useEffect(() => {
@@ -13,6 +13,9 @@ export default function AuthSuccessPage() {
             setTimeout(() => {
                 window.close();
             }, 500);
+        } else {
+            // If opened directly or opener lost, redirect to dashboard
+            window.location.href = "/dashboard";
         }
     }, []);
 
@@ -26,11 +29,9 @@ export default function AuthSuccessPage() {
             gap: 2
         }}>
             <CircularProgress />
-            <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert severity="success" sx={{ width: '100%' }}>
-                    Logged in successfully!
-                </Alert>
-            </Snackbar>
+            <Typography variant="body1" color="text.secondary">
+                Authenticating...
+            </Typography>
         </Box>
     );
 }

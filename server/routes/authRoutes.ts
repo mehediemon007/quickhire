@@ -17,8 +17,10 @@ router.get("/google", (req, res, next) => {
     passport.authenticate("google", {
         scope: ["profile", "email"],
         session: false,
-        state, // ✅ passed through OAuth round trip
+        state,
+        prompt: "select_account",
     })(req, res, next);
+
 });
 
 router.get(
